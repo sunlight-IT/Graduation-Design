@@ -1,0 +1,24 @@
+{
+    "configurations": [
+        {
+            "name": "app",
+            "includePath": [
+                "./project/Core/Inc",
+                "./project/Drivers/STM32F1xx_HAL_Driver/Inc",
+                "./project/Drivers/CMSIS/Include/",
+                "./project/Drivers/STM32F1xx_HAL_Driver/Inc/Legacy/",
+                "./project/Drivers/CMSIS/Device/ST/STM32F1xx/Include/",
+                "C:/STM32app/CUBE/STM32CubeIDE_1.15.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.win32_1.0.100.202403111256/tools/arm-none-eabi/include",
+                "./project/Usr"
+            ],
+            "defines": [
+                "DEBUG",
+                "USE_HAL_DRIVER",
+                "STM32F103xE"
+            ],
+            "compilerPath": "C:/STM32app/CUBE/STM32CubeIDE_1.15.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.win32_1.0.100.202403111256/tools/bin/arm-none-eabi-g++.exe",
+            "intelliSenseMode": "${default}"
+        }
+    ],
+    "version": 4
+}

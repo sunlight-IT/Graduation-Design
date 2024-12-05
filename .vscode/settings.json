@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "gpio.h": "c",
+        "stdint.h": "c",
+        "core.h": "c",
+        "debug_liget.h": "c",
+        "tick.h": "c"
+    },
+    "C_Cpp.default.compilerPath": ""
+}
