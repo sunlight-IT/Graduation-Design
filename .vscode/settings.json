@@ -4,7 +4,23 @@
         "stdint.h": "c",
         "core.h": "c",
         "debug_liget.h": "c",
-        "tick.h": "c"
+        "tick.h": "c",
+        "stdarg.h": "c",
+        "usart.h": "c",
+        "lcd_gpio.h": "c",
+        "lcd_drive.h": "c",
+        "spi.h": "c",
+        "gui.h": "c",
+        "component.h": "c",
+        "error_handing.h": "c",
+        "compare": "c",
+        "pic2.h": "c",
+        "sccb.h": "c",
+        "ov_7725.h": "c",
+        "main.h": "c",
+        "fifo_gpio.h": "c",
+        "al244b_fifo_driver.h": "c",
+        "image_display.h": "c"
     },
     "C_Cpp.default.compilerPath": ""
 }
