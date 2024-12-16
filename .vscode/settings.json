@@ -20,7 +20,12 @@
         "main.h": "c",
         "fifo_gpio.h": "c",
         "al244b_fifo_driver.h": "c",
-        "image_display.h": "c"
+        "image_display.h": "c",
+        "easytracer_color.h": "c",
+        "lcd_apply.h": "c",
+        "tim.h": "c",
+        "servo_driver.h": "c",
+        "stdlib.h": "c"
     },
     "C_Cpp.default.compilerPath": ""
 }

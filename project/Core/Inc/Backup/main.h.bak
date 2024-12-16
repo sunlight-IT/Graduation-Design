@@ -64,8 +64,8 @@ void Error_Handler(void);
 #define OV7725_RRST_GPIO_Port GPIOA
 #define OV7725_OE_Pin GPIO_PIN_3
 #define OV7725_OE_GPIO_Port GPIOA
-#define OV7725_WRST_Pin GPIO_PIN_4
-#define OV7725_WRST_GPIO_Port GPIOC
+#define OV7725_WRS_Pin GPIO_PIN_4
+#define OV7725_WRS_GPIO_Port GPIOC
 #define OV7725_RCLK_Pin GPIO_PIN_5
 #define OV7725_RCLK_GPIO_Port GPIOC
 #define OV7725_DATA0_Pin GPIO_PIN_8

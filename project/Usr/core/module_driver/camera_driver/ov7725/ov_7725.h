@@ -203,6 +203,7 @@ typedef struct {
 } ov7725_mode_param_t;
 
 bool Ov7725_init(void);
+void ov7725_mode_config(void);
 void ov7725_light_mode(light_mode mode);
 void ov7725_color_saturation(int8_t sat);
 void ov7725_brightness(int8_t brightness);

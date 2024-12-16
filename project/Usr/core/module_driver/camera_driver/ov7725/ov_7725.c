@@ -3,6 +3,7 @@
 #include "../AL422B_fifo/AL244B_fifo_driver.h"
 #include "../sccb/sccb.h"
 #include "component/component.h"
+#include "core/module_driver/lcd_driver/lcd_drive.h"
 #define TAG "OV7725_Camera"
 
 typedef struct {
@@ -111,22 +112,24 @@ static ov7725_mode_param_t camera_mode = {
     .cam_sx   = 0,
     .cam_sy   = 0,
 
-    .cam_width  = 320,
-    .cam_height = 240,
+    .cam_width  = 120,
+    .cam_height = 120,
 
     .lcd_sx   = 0,
     .lcd_sy   = 0,
     .lcd_scan = 3,
 
-    .light_mode = 0,  // 自动光照模式
+    .light_mode = k_office,  // 自动光照模式
     .saturation = 4,
-    .brightness = 3,
-    .contrast   = 3,
-    .effect     = 0,  // 反相
+    .brightness = 0,
+    .contrast   = 2,
+    .effect     = k_normal,  // 反相
 };
 
 bool Ov7725_init(void) {
   uint8_t ID = 0;
+  ov7725_fifo_init();
+
   if (0 == sccb_write_byte(0x12, 0x80)) {
     ErrorHanding(TAG, "sccb_write_byte error");
     return false;
@@ -384,5 +387,20 @@ void ov7725_window_set(uint16_t sx, uint16_t sy, uint16_t width, uint16_t height
 
   sccb_write_byte(k_REG_EXHCH, cal_temp);
 }
-
 ov7725_mode_param_t get_camera_mode(void) { return camera_mode; }
+
+void ov7725_mode_config(void) {
+  ov7725_light_mode(camera_mode.light_mode);
+  ov7725_color_saturation(camera_mode.saturation);
+  ov7725_brightness(camera_mode.brightness);
+  ov7725_constrast(camera_mode.contrast);
+  ov7725_special_effect(camera_mode.effect);
+  ov7725_window_set(camera_mode.cam_sx,      //
+                    camera_mode.cam_sy,      //
+                    camera_mode.cam_width,   //
+                    camera_mode.cam_height,  //
+                    camera_mode.QVGA_VGA);
+  lcd_direction(camera_mode.lcd_scan);
+  // lcd_set_windows(0, 0, 160 - 1, 120 - 1);
+  clear_vsync();
+}

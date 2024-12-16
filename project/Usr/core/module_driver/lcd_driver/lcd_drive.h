@@ -1,7 +1,7 @@
 #pragma once
 #include <stdint.h>
 
-#include "spi.h"
+#include "stm32f1xx_hal.h"
 #define BUF_SIZE 256
 
 // 定义LCD的尺寸
@@ -61,7 +61,10 @@ void lcd_set_cursor(uint16_t Xpos, uint16_t Ypos);
 void lcd_set_windows(uint16_t xStar, uint16_t yStar, uint16_t xEnd, uint16_t yEnd);
 void lcd_write_data_16(uint16_t word);
 void lcd_draw_point(uint16_t x, uint16_t y);
+void lcd_draw_line(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2);
 void lcd_write_ram_prepare(void);
 void lcd_direction(uint8_t direction);
+
+void test(void);
 
 void LCD_RESET();

@@ -13,6 +13,6 @@ void debug_light(void) {
   if (pass_time > DEBUG_LIGHT_BLINK) {
     DEBUG_LIGHT_TOGGLE;
     last_time = HAL_GetTick();
-    ZLOGI(TAG, "test");
+    // ZLOGI(TAG, "test");
   }
 }

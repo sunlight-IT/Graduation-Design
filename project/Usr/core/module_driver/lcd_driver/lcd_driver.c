@@ -34,14 +34,24 @@ void LCD_WR_REG(uint8_t byte) {
   LCD_CS_UP;
 }
 
-void LCD_RD_DATA(uint8_t byte) {
-  data_8 = byte;
+uint8_t LCD_RD_DATA(void) {
+  uint8_t data = 0;
   LCD_CS_DOWN;
-  LCD_RS_DOWN;
-  if (HAL_SPI_Receive(m_spi, &data_8, 1, 10)) {
+  if (HAL_SPI_Receive(m_spi, &data, 1, 10)) {
     ErrorHanding(TAG, "HAL_SPI_Transmit error");
   }
   LCD_CS_UP;
+  return data;
+}
+
+void test(void) {
+  uint16_t id;
+  LCD_WR_REG(0xD3);
+  id = LCD_RD_DATA();  // empty
+  id = LCD_RD_DATA();
+  id = LCD_RD_DATA() << 8;
+  id |= LCD_RD_DATA();
+  ZLOGI(TAG, "id is : %04x", id);
 }
 
 void LCD_WR_DATA(uint8_t byte) {
@@ -69,10 +79,6 @@ void lcd_write_data_16(uint16_t word) {
     ErrorHanding(TAG, "HAL_SPI_Transmit error");
   }
   LCD_CS_UP;
-}
-void lcd_draw_point(uint16_t x, uint16_t y) {
-  lcd_set_cursor(x, y);  // 设置光标位置
-  lcd_write_data_16(POINT_COLOR);
 }
 
 void lcd_direction(uint8_t direction) {
@@ -121,7 +127,7 @@ void lcd_set_windows(uint16_t xStar, uint16_t yStar, uint16_t xEnd, uint16_t yEn
   lcd_write_ram_prepare();  // 开始写入GRAM
 }
 
-void lcd_read_identification(void) { LCD_WR_REG(0x04); }
+// void lcd_read_identification(void) { LCD_WR_REG(0x04); }
 
 void lcd_clear(uint16_t color) {
   unsigned int i, m;
@@ -278,3 +284,12 @@ void lcd_init(void) {
 }
 
 void lcd_set_cursor(uint16_t Xpos, uint16_t Ypos) { lcd_set_windows(Xpos, Ypos, Xpos, Ypos); }
+
+uint16_t lcd_read_point_rgb(uint16_t x, uint16_t y) {
+  uint16_t r = 0, g = 0, b = 0;
+  if (x > lcddev.width || y > lcddev.height) return 0;
+  lcd_set_cursor(x, y);
+
+  LCD_WR_REG(0x0e);
+  r = LCD_RD_DATA();
+}
