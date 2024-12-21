@@ -26,3 +26,4 @@
 void    ov7725_fifo_init(void);
 void    clear_vsync(void);
 uint8_t get_vsync(void);
+void    vsync_exit(void);

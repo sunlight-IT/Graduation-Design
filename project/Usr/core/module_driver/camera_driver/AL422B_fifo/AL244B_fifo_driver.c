@@ -14,8 +14,7 @@ void ov7725_fifo_init(void) {
 void    clear_vsync(void) { n_vsync = 0; }
 uint8_t get_vsync(void) { return n_vsync; }
 
-// exti callback
-void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
+void vsync_exit(void) {
   if (n_vsync == 0) {
     FIFO_WRST_L;
     FIFO_WE_H;

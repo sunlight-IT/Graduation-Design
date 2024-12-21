@@ -25,7 +25,13 @@
         "lcd_apply.h": "c",
         "tim.h": "c",
         "servo_driver.h": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "voice_driver.h": "c",
+        "ld3320_apply.h": "c",
+        "ld3320_driver.h": "c",
+        "cmsis_armcc.h": "c",
+        "cmsis_armclang.h": "c",
+        "ld3320_gpio.h": "c"
     },
     "C_Cpp.default.compilerPath": ""
 }
