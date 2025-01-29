@@ -31,7 +31,12 @@
         "ld3320_driver.h": "c",
         "cmsis_armcc.h": "c",
         "cmsis_armclang.h": "c",
-        "ld3320_gpio.h": "c"
+        "ld3320_gpio.h": "c",
+        "syn6288_driver.h": "c",
+        "string.h": "c",
+        "stm32f1xx_it.h": "c",
+        "stm32f1xx_hal.h": "c",
+        "my_log.h": "c"
     },
     "C_Cpp.default.compilerPath": ""
 }

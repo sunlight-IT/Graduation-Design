@@ -80,7 +80,6 @@ void Error_Handler(void);
 #define VOICE_RST_GPIO_Port GPIOB
 #define VOICE_IRQ_Pin GPIO_PIN_11
 #define VOICE_IRQ_GPIO_Port GPIOF
-#define VOICE_IRQ_EXTI_IRQn EXTI15_10_IRQn
 #define OV7725_DATA0_Pin GPIO_PIN_8
 #define OV7725_DATA0_GPIO_Port GPIOD
 #define OV7725_DATA1_Pin GPIO_PIN_9

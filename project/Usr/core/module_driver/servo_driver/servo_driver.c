@@ -4,20 +4,24 @@
 
 #define TAG "servo_driver"
 
-static TIM_HandleTypeDef *m_tim;
+static TIM_HandleTypeDef *m_tim[2];
 
-void servo_handle_reg(TIM_HandleTypeDef *h_tim) { m_tim = h_tim; }
+void servo_x_handle_reg(TIM_HandleTypeDef *h_tim) { m_tim[0] = h_tim; }
+void servo_y_handle_reg(TIM_HandleTypeDef *h_tim) { m_tim[1] = h_tim; }
 
-void duty_output(uint32_t duty) {
+void duty_output(uint32_t duty, int option) {
   uint32_t duty_temp = duty;
   if (duty_temp <= DUTY_MIN)
     duty_temp = DUTY_MIN;
   else if (duty_temp >= DUTY_MAX)
     duty_temp = DUTY_MAX;
-  __HAL_TIM_SetCompare(m_tim, TIM_CHANNEL_1, duty_temp);
+  if (option == k_servo_x)
+    __HAL_TIM_SetCompare(m_tim[option], TIM_CHANNEL_1, duty_temp);
+  else
+    __HAL_TIM_SetCompare(m_tim[1], TIM_CHANNEL_1, duty_temp);
 }
 
-void servo_angle_row(uint16_t angle) {
+void servo_angle_row(uint16_t angle, int option) {
   float    angle_tmp = 1.0f * angle;
   uint32_t duty      = 0;
   if (angle_tmp > ANGLE_MAX)
@@ -26,5 +30,5 @@ void servo_angle_row(uint16_t angle) {
     angle_tmp = ANGLE_MIN;
 
   duty = angle_tmp / ANGLE_MAX * (SERVO_DUTY_MAX - SERVO_DUTY_MIN) + SERVO_DUTY_MIN;
-  duty_output(duty);
+  duty_output(duty, option);
 }

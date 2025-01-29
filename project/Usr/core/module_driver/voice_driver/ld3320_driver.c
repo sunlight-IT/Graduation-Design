@@ -2,7 +2,7 @@
 
 #include "component/component.h"
 
-#define TAG "voice_driver"
+#define TAG "LD3320_driver"
 
 #define CMD_DATA_CFG(cmd, code, show) {(cmd), (code), (show)}
 

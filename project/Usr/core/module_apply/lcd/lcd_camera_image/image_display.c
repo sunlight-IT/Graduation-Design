@@ -74,11 +74,10 @@ void trace_picture(void) {
   if (Trace(&target_conditon, &result)) {
     lcd_draw_cross(result.x, result.y, 3);
     lcd_draw_rectangle(result.x, result.y, result.w, result.h);
-    ZLOGI(TAG, "trace sucess");
-    return 0;
+    // ZLOGI(TAG, "trace sucess");
+    return;
   }
-  ZLOGE(TAG, "trace fail");
-  return 0;
+  // ZLOGE(TAG, "trace fail");
 }
 
 uint16_t get_picture_data(uint16_t x, uint16_t y) { return picture_data[x][y]; }

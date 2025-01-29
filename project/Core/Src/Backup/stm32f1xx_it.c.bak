@@ -22,6 +22,9 @@
 #include "stm32f1xx_it.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "core/module_driver/camera_driver/AL422B_fifo/AL244B_fifo_driver.h"
+#include "core/module_driver/voice_driver/ld3320_driver.h"
+#include "core/module_driver/voice_driver/syn6288_driver/syn6288_driver.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -253,20 +256,6 @@ void USART2_IRQHandler(void)
   /* USER CODE END USART2_IRQn 1 */
 }
 
-/**
-  * @brief This function handles EXTI line[15:10] interrupts.
-  */
-void EXTI15_10_IRQHandler(void)
-{
-  /* USER CODE BEGIN EXTI15_10_IRQn 0 */
-
-  /* USER CODE END EXTI15_10_IRQn 0 */
-  HAL_GPIO_EXTI_IRQHandler(VOICE_IRQ_Pin);
-  /* USER CODE BEGIN EXTI15_10_IRQn 1 */
-
-  /* USER CODE END EXTI15_10_IRQn 1 */
-}
-
 /* USER CODE BEGIN 1 */
 // exti callback
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
@@ -274,6 +263,13 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
     vsync_exit();
   } else if (VOICE_IRQ_Pin == GPIO_Pin) {
     ld3320_exit();
+  }
+}
+
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
+  if (huart == &huart2) {
+    syn_recv();
+    HAL_UART_Receive_IT(&huart2, get_rx_cache(), 1);
   }
 }
 /* USER CODE END 1 */
