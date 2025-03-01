@@ -4,6 +4,8 @@
 
 #define TAG "ALL2448_FIFO"
 
+// static
+
 static uint8_t n_vsync;
 
 void ov7725_fifo_init(void) {

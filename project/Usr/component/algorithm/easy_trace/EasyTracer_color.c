@@ -1,7 +1,7 @@
 #include "EasyTracer_color.h"
 
-#include "core/module_apply/lcd/lcd_apply.h"
-#include "core/module_apply/lcd/lcd_camera_image/image_display.h"
+#include "core/module_driver/lcd_driver/lcd_drive.h"
+#include "core/module_middle/image_display/image_display.h"
 #define min3v(v1, v2, v3) ((v1) > (v2) ? ((v2) > (v3) ? (v3) : (v2)) : ((v1) > (v3) ? (v3) : (v1)))  // 取最大值
 #define max3v(v1, v2, v3) ((v1) < (v2) ? ((v2) < (v3) ? (v3) : (v2)) : ((v1) < (v3) ? (v3) : (v1)))  // 取最小值
 
@@ -129,7 +129,8 @@ static void RGBtoHSL(const COLOR_RGB *Rgb, COLOR_HSL *Hsl) {
  *返回参数：成功返回1，失败返回0
  ****************************************************************************/
 static int ColorMatch(const COLOR_HSL *Hsl, const TARGET_CONDI *Condition) {
-  if (Hsl->hue > Condition->H_MIN && Hsl->hue < Condition->H_MAX && Hsl->saturation > Condition->S_MIN && Hsl->saturation < Condition->S_MAX && Hsl->luminance > Condition->L_MIN && Hsl->luminance < Condition->L_MAX)  // hue为色调，saturation为饱和度 ，luminance为亮度
+  if (((Hsl->hue > Condition->H_MIN1 && Hsl->hue < Condition->H_MAX1) || (Hsl->hue > Condition->H_MIN2 && Hsl->hue < Condition->H_MAX2)) && Hsl->hue < Condition->H_MAX1 && Hsl->saturation > Condition->S_MIN && Hsl->saturation < Condition->S_MAX && Hsl->luminance > Condition->L_MIN &&
+      Hsl->luminance < Condition->L_MAX)  // hue为色调，saturation为饱和度 ，luminance为亮度
     return 1;
   else
     return 0;

@@ -4,18 +4,19 @@
 
 #include "component/algorithm/easy_trace/EasyTracer_color.h"
 #include "component/component.h"
-#include "core/module_apply/lcd/lcd_apply.h"
 #include "core/module_driver/camera_driver/AL422B_fifo/AL244B_fifo_driver.h"
 #include "core/module_driver/lcd_driver/lcd_drive.h"
+
 #define TAG "Image_display"
 
 #define min3v(v1, v2, v3) ((v1) > (v2) ? ((v2) > (v3) ? (v3) : (v2)) : ((v1) > (v3) ? (v3) : (v1)))  // 取最大值
 #define max3v(v1, v2, v3) ((v1) < (v2) ? ((v2) < (v3) ? (v3) : (v2)) : ((v1) < (v3) ? (v3) : (v1)))  // 取最小值
 
-static TARGET_CONDI target_conditon = {210, 240, 30, 200, 30, 160, 12, 12, 100, 100};
+static TARGET_CONDI target_conditon = {0, 20, 210, 255, 100, 255, 60, 200, 10, 10, 100, 100};
 static uint16_t     picture_data[PIC_W][PIC_H];
-static uint8_t      picture_rgb_binarization[PIC_W][PIC_H];
-static RESULT       result;
+// static uint8_t      picture_rgb_binarization[PIC_W][PIC_H];
+static RESULT   result;
+static POSITION result_pos;
 
 static void    read_color(unsigned int x, unsigned int y, rgb_t* Rgb);
 static void    rgb_to_hsl(const rgb_t* Rgb, hsl_t* Hsl);
@@ -35,9 +36,9 @@ bool image_get(uint8_t sx, uint8_t sy, uint16_t width, uint16_t height) {
       }
     }
     clear_vsync();
-    status = true;
+    return true;
   }
-  return status;
+  return false;
 }
 
 void image_display_bin(void) {
@@ -46,13 +47,15 @@ void image_display_bin(void) {
   hsl_t    hsl_tmp;
   uint16_t tmp_data = 0;
   lcd_set_windows(BIN_SHOW_X, 0, BIN_SHOW_X + PIC_W - 1, 0 + PIC_H - 1);
-  for (i = 0; i < PIC_W; i++)
+  for (i = 0; i < PIC_W; i++) {
     for (j = 0; j < PIC_H; j++) {
       read_color(i, j, &rgb_tmp);  // 行扫描读取
       rgb_to_hsl(&rgb_tmp, &hsl_tmp);
-      picture_rgb_binarization[i][j] = color_match_bin(&hsl_tmp);
-      lcd_write_data_16(picture_rgb_binarization[j][i]);  // 屏幕的扫描方式是列扫描，所以得转置
+      // picture_rgb_binarization[i][j] = color_match_bin(&hsl_tmp);
+      // lcd_write_data_16(picture_rgb_binarization[j][i]);  // 屏幕的扫描方式是列扫描，所以得转置
+      lcd_write_data_16(color_match_bin(&hsl_tmp));
     }
+  }
 }
 void image_display_rgb(void) {
   int      i, j;
@@ -66,22 +69,41 @@ void image_display_rgb(void) {
     }
 }
 void image_display(void) {
+  // image_display_rgb();
+  // lcd_draw_cross(result.x, result.y, 3);
+  // lcd_draw_rectangle(result.x, result.y, result.w, result.h);
+
   image_display_bin();
-  image_display_rgb();
+
+  lcd_show_string(0, 150, 12, "trace center is ", 0);
+  lcd_show_string(0, 165, 12, "(  ,  )", 0);
+  lcd_show_num(5, 165, result.x, 2, 12);
+  lcd_show_num(22, 165, result.y, 2, 12);
+
+  lcd_show_string(0, 180, 12, "picture center is ", 0);
+  lcd_show_string(0, 195, 12, "(  ,  )", 0);
+  lcd_show_num(5, 195, RGB_PIC_CENTER_X, 2, 12);
+  lcd_show_num(22, 195, RGB_PIC_CENTER_Y, 2, 12);
 }
 
-void trace_picture(void) {
+bool finding_flag = false;
+bool trace_picture(void) {
   if (Trace(&target_conditon, &result)) {
-    lcd_draw_cross(result.x, result.y, 3);
-    lcd_draw_rectangle(result.x, result.y, result.w, result.h);
+    result_pos.x = result.x;
+    result_pos.y = result.y;
     // ZLOGI(TAG, "trace sucess");
-    return;
+    return true;
+  } else {
+    return false;
+    // result_pos.x = 0;
+    // result_pos.y = 0;
   }
   // ZLOGE(TAG, "trace fail");
 }
 
 uint16_t get_picture_data(uint16_t x, uint16_t y) { return picture_data[x][y]; }
-uint16_t get_picture_data_bina(uint16_t x, uint16_t y) { return picture_rgb_binarization[x][y]; }
+// uint16_t get_picture_data_bina(uint16_t x, uint16_t y) { return picture_rgb_binarization[x][y]; }
+POSITION get_trace_pos() { return result_pos; }
 
 static void rgb_to_hsl(const rgb_t* Rgb, hsl_t* Hsl) {
   int h, s, l, maxVal, minVal, difVal;
@@ -126,15 +148,15 @@ static void rgb_to_hsl(const rgb_t* Rgb, hsl_t* Hsl) {
 static void read_color(unsigned int x, unsigned int y, rgb_t* Rgb) {
   uint16_t C16;  // 即Color16，R5+G6+B5=16
 
-  C16    = get_picture_data(x, y);  // 读某点颜色
+  C16    = get_picture_data(y, x);  // 读某点颜色
   Rgb->r = (unsigned char)((C16 & 0xf800) >> 8);
   Rgb->g = (unsigned char)((C16 & 0x07e0) >> 3);
   Rgb->b = (unsigned char)((C16 & 0x001f) << 3);
 }
 
 static uint8_t color_match_bin(hsl_t* hsl) {
-  if (hsl->h > target_conditon.H_MIN && hsl->h < target_conditon.H_MAX     //
-      && hsl->s > target_conditon.S_MIN && hsl->s < target_conditon.S_MAX  //
+  if (((hsl->h > target_conditon.H_MIN1 && hsl->h < target_conditon.H_MAX1) || (hsl->h > target_conditon.H_MIN2 && hsl->h < target_conditon.H_MAX2))  //
+      && hsl->s > target_conditon.S_MIN && hsl->s < target_conditon.S_MAX                                                                             //
       && hsl->l > target_conditon.L_MIN && hsl->l < target_conditon.L_MAX) {
     return 0;
   } else

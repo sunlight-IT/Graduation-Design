@@ -11,6 +11,9 @@
 #define BIN_SHOW_X PIC_W + RGB_SHOW_X + 1
 #define BIN_SHOW_Y 0
 
+#define RGB_PIC_CENTER_X ((PIC_W + RGB_SHOW_X) / 2)
+#define RGB_PIC_CENTER_Y ((PIC_H + RGB_SHOW_Y) / 2)
+
 typedef struct {
   uint8_t r;
 
@@ -28,9 +31,15 @@ typedef struct {
   uint8_t l;  // [0,240] 亮度
 } hsl_t;
 
+typedef struct {
+  int16_t x;
+  int16_t y;
+} POSITION;
+
 bool image_get(uint8_t sx, uint8_t sy, uint16_t width, uint16_t height);
-void trace_picture(void);
+bool trace_picture(void);
 void image_display(void);
 
 uint16_t get_picture_data(uint16_t x, uint16_t y);
-uint16_t get_picture_data_bina(uint16_t x, uint16_t y);
+// uint16_t get_picture_data_bina(uint16_t x, uint16_t y);
+POSITION get_trace_pos(void);

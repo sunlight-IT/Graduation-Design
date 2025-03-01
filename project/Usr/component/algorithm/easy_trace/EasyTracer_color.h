@@ -10,8 +10,11 @@
 #define ITERATE_NUM    7  // 迭代次数，迭代次数越多识别越精确，但计算量越大
 
 typedef struct {
-  unsigned char H_MIN;  // 目标最小色调
-  unsigned char H_MAX;  // 目标最大色调
+  unsigned char H_MIN1;  // 目标最小色调
+  unsigned char H_MAX1;  // 目标最大色调
+
+  unsigned char H_MIN2;  // 目标最小色调
+  unsigned char H_MAX2;  // 目标最大色调
 
   unsigned char S_MIN;  // 目标最小饱和度
   unsigned char S_MAX;  // 目标最大饱和度

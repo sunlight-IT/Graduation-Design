@@ -1,7 +1,7 @@
+#include "FONT.H"
 #include "component/component.h"
 #include "lcd_drive.h"
 #include "lcd_gpio.h"
-
 #define TAG "LCD_DRIVER"
 
 static SPI_HandleTypeDef* m_spi;
@@ -292,4 +292,175 @@ uint16_t lcd_read_point_rgb(uint16_t x, uint16_t y) {
 
   LCD_WR_REG(0x0e);
   r = LCD_RD_DATA();
+}
+
+void lcd_show_char(uint16_t x, uint16_t y, uint16_t fc, uint16_t bc, uint8_t num, uint8_t size, uint8_t mode) {
+  uint8_t  temp;
+  uint8_t  pos, t;
+  uint16_t colortemp = POINT_COLOR;
+
+  num = num - ' ';                                        // 得到偏移后的值
+  lcd_set_windows(x, y, x + size / 2 - 1, y + size - 1);  // 设置单个文字显示窗口
+  if (!mode)                                              // 非叠加方式
+  {
+    for (pos = 0; pos < size; pos++) {
+      if (size == 12)
+        temp = asc2_1206[num][pos];  // 调用1206字体
+      else
+        temp = asc2_1608[num][pos];  // 调用1608字体
+      for (t = 0; t < size / 2; t++) {
+        if (temp & 0x01)
+          lcd_write_data_16(fc);
+        else
+          lcd_write_data_16(bc);
+        temp >>= 1;
+      }
+    }
+  } else  // 叠加方式
+  {
+    for (pos = 0; pos < size; pos++) {
+      if (size == 12)
+        temp = asc2_1206[num][pos];  // 调用1206字体
+      else
+        temp = asc2_1608[num][pos];  // 调用1608字体
+      for (t = 0; t < size / 2; t++) {
+        POINT_COLOR = fc;
+        if (temp & 0x01) lcd_draw_point(x + t, y + pos);  // 画一个点
+        temp >>= 1;
+      }
+    }
+  }
+  POINT_COLOR = colortemp;
+  lcd_set_windows(0, 0, lcddev.width - 1, lcddev.height - 1);  // 恢复窗口为全屏
+}
+
+void lcd_show_string(uint16_t x, uint16_t y, uint8_t size, uint8_t* p, uint8_t mode) {
+  while ((*p <= '~') && (*p >= ' '))  // 判断是不是非法字符!
+  {
+    if (x > (lcddev.width - 1) || y > (lcddev.height - 1)) return;
+    lcd_show_char(x, y, POINT_COLOR, BACK_COLOR, *p, size, mode);
+    x += size / 2;
+    p++;
+  }
+}
+
+static uint32_t mypow(uint8_t m, uint8_t n) {
+  uint32_t result = 1;
+  while (n--) result *= m;
+  return result;
+}
+
+void lcd_show_num(uint16_t x, uint16_t y, int32_t num, uint8_t len, uint8_t size) {
+  uint8_t t, temp;
+  uint8_t enshow = 0;
+  uint8_t signaled_x;
+  if (num < 0) {
+    num        = -num;
+    signaled_x = x + (size / 2);
+    lcd_show_char(x, y, POINT_COLOR, BACK_COLOR, '-', size, 0);
+
+  } else {
+    signaled_x = x;
+  }
+  for (t = 0; t < len; t++) {
+    temp = (num / mypow(10, len - t - 1)) % 10;
+    if (enshow == 0 && t < (len - 1)) {
+      if (temp == 0) {
+        lcd_show_char(signaled_x + (size / 2) * t, y, POINT_COLOR, BACK_COLOR, ' ', size, 0);
+        continue;
+      } else
+        enshow = 1;
+    }
+    lcd_show_char(signaled_x + (size / 2) * t, y, POINT_COLOR, BACK_COLOR, temp + '0', size, 0);
+  }
+}
+
+void lcd_draw_point(uint16_t x, uint16_t y) {
+  lcd_set_cursor(x, y);  // 设置光标位置
+  lcd_write_data_16(POINT_COLOR);
+}
+
+void lcd_draw_point_clor(uint16_t x, uint16_t y, uint16_t clor) {
+  lcd_set_cursor(x, y);  // 设置光标位置
+  lcd_write_data_16(clor);
+}
+
+void lcd_draw_line(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2) {
+  uint16_t t;
+  int      xerr = 0, yerr = 0, delta_x, delta_y, distance;
+  int      incx, incy, uRow, uCol;
+
+  delta_x = x2 - x1;  // 计算坐标增量
+  delta_y = y2 - y1;
+  uRow    = x1;
+  uCol    = y1;
+  if (delta_x > 0)
+    incx = 1;  // 设置单步方向
+  else if (delta_x == 0)
+    incx = 0;  // 垂直线
+  else {
+    incx    = -1;
+    delta_x = -delta_x;
+  }
+  if (delta_y > 0)
+    incy = 1;
+  else if (delta_y == 0)
+    incy = 0;  // 水平线
+  else {
+    incy    = -1;
+    delta_y = -delta_y;
+  }
+  if (delta_x > delta_y)
+    distance = delta_x;  // 选取基本增量坐标轴
+  else
+    distance = delta_y;
+  for (t = 0; t <= distance + 1; t++)  // 画线输出
+  {
+    lcd_draw_point(uRow, uCol);  // 画点
+    xerr += delta_x;
+    yerr += delta_y;
+    if (xerr > distance) {
+      xerr -= distance;
+      uRow += incx;
+    }
+    if (yerr > distance) {
+      yerr -= distance;
+      uCol += incy;
+    }
+  }
+}
+
+void lcd_draw_cross(uint16_t x1, uint16_t y1, uint16_t length) {
+  int16_t uRow, uCol;
+  uRow = x1 + length;
+  lcd_draw_line(x1, y1, uRow, y1);
+  uRow = ((x1 - length) < 0) ? 0 : x1 - length;
+  lcd_draw_line(x1, y1, uRow, y1);
+  uCol = y1 + length;
+  lcd_draw_line(x1, y1, x1, uCol);
+  uCol = ((y1 - length) < 0) ? 0 : y1 - length;
+  lcd_draw_line(x1, y1, x1, uCol);
+}
+
+// 画矩形
+//(x1,y1),(x2,y2):矩形的对角坐标
+void lcd_draw_rectangle(uint16_t x1, uint16_t y1, uint16_t width, uint16_t height) {
+  uint16_t diagonal_point_x1 = x1 + width / 2;
+  uint16_t diagonal_point_y1 = y1 + height / 2;
+  uint16_t diagonal_point_x2 = x1 - width / 2;
+  uint16_t diagonal_point_y2 = y1 - height / 2;
+  lcd_draw_line(diagonal_point_x1, diagonal_point_y1, diagonal_point_x1, diagonal_point_y2);
+  lcd_draw_line(diagonal_point_x1, diagonal_point_y1, diagonal_point_x2, diagonal_point_y1);
+  lcd_draw_line(diagonal_point_x2, diagonal_point_y2, diagonal_point_x1, diagonal_point_y2);
+  lcd_draw_line(diagonal_point_x2, diagonal_point_y2, diagonal_point_x2, diagonal_point_y1);
+}
+
+void lcd_draw_image(uint16_t x, uint16_t y, uint16_t width, uint16_t height, const char* p) {
+  uint8_t picH, picL;
+  lcd_set_windows(x, y, x + width, y + width);
+  for (int i = 0; i < width * height; i++) {
+    picL = *(p + i * 2);
+    picH = *(p + i * 2 + 1);
+    lcd_write_data_16(picH << 8 | picL);
+  }
 }

@@ -2,6 +2,7 @@
 
 #include <stdint.h>
 
+#include "core/module_middle/servo_apply/servo_apply.h"
 #include "stm32f1xx_hal.h"
 
 #define SERVO_DUTY_MIN 25   // 0.5ms
@@ -21,3 +22,6 @@ void servo_x_handle_reg(TIM_HandleTypeDef *h_tim);
 void servo_y_handle_reg(TIM_HandleTypeDef *h_tim);
 
 void servo_angle_row(uint16_t angle, int option);
+
+void servo_test(void);
+void servo_unblock_type(void);
