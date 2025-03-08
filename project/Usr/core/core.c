@@ -4,11 +4,13 @@
 #include "component/time_slice/time_slice.h"
 #include "fsm_middle/fsm_middle.h"
 #include "module_driver/Debug_light_driver/Debug_liget.h"
-
+#include "module_driver/camera_driver/AL422B_fifo/AL244B_fifo_driver.h"
 #include "module_driver/lcd_driver/lcd_drive.h"
 #include "module_driver/servo_driver/servo_driver.h"
 #include "module_driver/voice_driver/syn6288_driver/syn6288_driver.h"
 #include "module_middle/image_display/image_display.h"
+#include "module_middle/middle_framework/middle_event_process.h"
+#include "module_middle/middle_framework/middle_table.h"
 #include "spi.h"
 #include "tim.h"
 #include "usart.h"
@@ -39,6 +41,8 @@ void        core_init(void) {
   Ov7725_init();
   ov7725_mode_config();
   camera_mode = get_camera_mode();
+
+  registCallback(EVENT_PicData, pic_recv);
 }
 
 extern TIME_DATA_T image_data;
@@ -47,10 +51,17 @@ extern TIME_DATA_T servo_ctrl;
 void               core_loop(void) {
   // servo_test();
 
-  if (image_process(&camera_mode)) {
-    servo_pid_calculate();
-    image_display();
+  // if (image_process(&camera_mode)) {
+  //   image_display(get_picture());
+  //   servo_pid_calculate();
+  // }
+
+  if (true == get_pic_state()) {
+    image_display(get_picture());
   }
+  process_event();
+  // process_table();
+
   // if (image_data.state) {
   //   if (image_get(camera_mode.lcd_sx,     //
   //                               camera_mode.lcd_sy,     //

@@ -1,5 +1,6 @@
 #include "fsm_middle.h"
 
+#include "core/module_driver/camera_driver/AL422B_fifo/AL244B_fifo_driver.h"
 #include "core/module_driver/camera_driver/ov7725/ov_7725.h"
 #include "core/module_middle/image_display/image_display.h"
 
@@ -27,7 +28,7 @@ fsm_t image_process(ov7725_mode_param_t* camera_mode) {
       if (!image_get(camera_mode->lcd_sx,     //
                      camera_mode->lcd_sy,     //
                      camera_mode->cam_width,  //
-                     camera_mode->cam_height)) {
+                     camera_mode->cam_height, get_picture())) {
         GET_IMAGE_DATA_RESET_FSM();
         return fsm_on_going;
       }

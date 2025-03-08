@@ -112,8 +112,8 @@ static ov7725_mode_param_t camera_mode = {
     .cam_sx   = 0,
     .cam_sy   = 0,
 
-    .cam_width  = 120,
-    .cam_height = 120,
+    .cam_width  = CAMERA_WIDTH,
+    .cam_height = CAMERA_HEIGHT,
 
     .lcd_sx   = 0,
     .lcd_sy   = 0,

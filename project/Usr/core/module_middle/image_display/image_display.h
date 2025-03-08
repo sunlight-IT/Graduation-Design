@@ -2,6 +2,8 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#include "core/module_driver/camera_driver/AL422B_fifo/AL244B_fifo_driver.h"
+
 #define PIC_W 120
 #define PIC_H 120
 
@@ -36,9 +38,11 @@ typedef struct {
   int16_t y;
 } POSITION;
 
-bool image_get(uint8_t sx, uint8_t sy, uint16_t width, uint16_t height);
+bool image_get(uint8_t sx, uint8_t sy, uint16_t width, uint16_t height, pic_data pic);
+// void pic_data_process(void);
+
 bool trace_picture(void);
-void image_display(void);
+void image_display(pic_data pic);
 
 uint16_t get_picture_data(uint16_t x, uint16_t y);
 // uint16_t get_picture_data_bina(uint16_t x, uint16_t y);

@@ -4,7 +4,6 @@
 
 #include "component/algorithm/easy_trace/EasyTracer_color.h"
 #include "component/component.h"
-#include "core/module_driver/camera_driver/AL422B_fifo/AL244B_fifo_driver.h"
 #include "core/module_driver/lcd_driver/lcd_drive.h"
 
 #define TAG "Image_display"
@@ -13,7 +12,7 @@
 #define max3v(v1, v2, v3) ((v1) < (v2) ? ((v2) < (v3) ? (v3) : (v2)) : ((v1) < (v3) ? (v3) : (v1)))  // 取最小值
 
 static TARGET_CONDI target_conditon = {0, 20, 210, 255, 100, 255, 60, 200, 10, 10, 100, 100};
-static uint16_t     picture_data[PIC_W][PIC_H];
+// static uint16_t     picture_data[PIC_W][PIC_H];
 // static uint8_t      picture_rgb_binarization[PIC_W][PIC_H];
 static RESULT   result;
 static POSITION result_pos;
@@ -22,7 +21,7 @@ static void    read_color(unsigned int x, unsigned int y, rgb_t* Rgb);
 static void    rgb_to_hsl(const rgb_t* Rgb, hsl_t* Hsl);
 static uint8_t color_match_bin(hsl_t* hsl);
 
-bool image_get(uint8_t sx, uint8_t sy, uint16_t width, uint16_t height) {
+bool image_get(uint8_t sx, uint8_t sy, uint16_t width, uint16_t height, pic_data pic) {
   bool     status = false;
   uint16_t i, j;
   uint16_t camera_dat = 0;
@@ -32,7 +31,7 @@ bool image_get(uint8_t sx, uint8_t sy, uint16_t width, uint16_t height) {
     for (i = 0; i < width; i++) {
       for (j = 0; j < height; j++) {
         FIFO_READ(camera_dat);
-        picture_data[i][j] = camera_dat;  // 行扫描存放
+        pic[i][j] = camera_dat;  // 行扫描存放
       }
     }
     clear_vsync();
@@ -57,22 +56,23 @@ void image_display_bin(void) {
     }
   }
 }
-void image_display_rgb(void) {
+void image_display_rgb(pic_data pic) {
   int      i, j;
   uint16_t tmp_data = 0;
+
   lcd_set_windows(RGB_SHOW_X, RGB_SHOW_Y, RGB_SHOW_X + PIC_W - 1, RGB_SHOW_Y + PIC_H - 1);
   for (i = 0; i < PIC_W; i++)
     for (j = 0; j < PIC_H; j++) {
-      tmp_data = picture_data[j][i] >> 8;
-      tmp_data |= picture_data[j][i] << 8;
+      tmp_data |= pic[j][i] << 8;
       lcd_write_data_16(tmp_data);
     }
 }
-void image_display(void) {
+void image_display(pic_data pic) {
   // image_display_rgb();
   // lcd_draw_cross(result.x, result.y, 3);
   // lcd_draw_rectangle(result.x, result.y, result.w, result.h);
 
+  // image_display_rgb(pic);
   image_display_bin();
 
   lcd_show_string(0, 150, 12, "trace center is ", 0);
@@ -101,7 +101,7 @@ bool trace_picture(void) {
   // ZLOGE(TAG, "trace fail");
 }
 
-uint16_t get_picture_data(uint16_t x, uint16_t y) { return picture_data[x][y]; }
+// uint16_t get_picture_data(uint16_t x, uint16_t y) { return picture_data[x][y]; }
 // uint16_t get_picture_data_bina(uint16_t x, uint16_t y) { return picture_rgb_binarization[x][y]; }
 POSITION get_trace_pos() { return result_pos; }
 

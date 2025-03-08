@@ -39,7 +39,9 @@
         "my_log.h": "c",
         "pid.h": "c",
         "service_apply.h": "c",
-        "fsm_middle.h": "c"
+        "fsm_middle.h": "c",
+        "middle_event_process.h": "c",
+        "middle_table.h": "c"
     },
     "C_Cpp.default.compilerPath": ""
 }

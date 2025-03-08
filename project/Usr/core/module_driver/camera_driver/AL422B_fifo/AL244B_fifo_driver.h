@@ -1,5 +1,10 @@
 #pragma once
+#include <stdbool.h>
+
 #include "fifo_gpio.h"
+
+#define CAMERA_WIDTH  120
+#define CAMERA_HEIGHT 120
 
 #define FIFO_RD_PREPARE \
   do {                  \
@@ -23,7 +28,17 @@
     FIFO_RCLK_H;                                          \
   } while (0)
 
-void    ov7725_fifo_init(void);
-void    clear_vsync(void);
-uint8_t get_vsync(void);
-void    vsync_exit(void);
+typedef uint8_t (*pic_data)[CAMERA_WIDTH];
+
+void ov7725_fifo_init(void);
+
+void clear_vsync(void);
+
+void vsync_exit(void);
+
+uint16_t get_picture_data(uint16_t x, uint16_t y);
+pic_data get_picture(void);
+void     pic_recv(void);
+uint8_t  get_vsync(void);
+bool     get_pic_state(void);
+void     clear_pic_state(void);
