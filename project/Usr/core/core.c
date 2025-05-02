@@ -1,26 +1,43 @@
 #include "core.h"
 
+#include "app/app_image_display.h"
+#include "app/app_schedule.h"
 #include "component/component.h"
 #include "component/time_slice/time_slice.h"
-#include "fsm_middle/fsm_middle.h"
+// #include "fsm_middle/fsm_middle.h"
 #include "module_driver/Debug_light_driver/Debug_liget.h"
 #include "module_driver/camera_driver/AL422B_fifo/AL244B_fifo_driver.h"
+#include "module_driver/camera_driver/ov7725/ov_7725.h"
 #include "module_driver/lcd_driver/lcd_drive.h"
 #include "module_driver/servo_driver/servo_driver.h"
 #include "module_driver/voice_driver/syn6288_driver/syn6288_driver.h"
-#include "module_middle/image_display/image_display.h"
 #include "module_middle/middle_framework/middle_event_process.h"
 #include "module_middle/middle_framework/middle_table.h"
 #include "spi.h"
 #include "tim.h"
 #include "usart.h"
+//
+#include "ui/MiaoUI/core_ui/ui.h"
+#include "ui/MiaoUI/ui_conf.h"
+//
+
+//
+#include "app/app_button.h"
+//
+
+#define DEBUG_OLED 1
 
 static ov7725_mode_param_t camera_mode;
 
 static int  i;
 bool        flag = false;
 extern bool finding_flag;
+
+static ui_t ui;
 void        core_init(void) {
+#if DEBUG_OLED
+  HAL_TIM_Base_Start_IT(&htim3);
+
   lcd_handle_reg(&hspi2);
 
   servo_x_handle_reg(&htim4);
@@ -28,59 +45,40 @@ void        core_init(void) {
   /******************************* */
   lcd_init();
 
-  servo_angle_row(900, 0);
-  servo_angle_row(900, 1);
-  // ld3320_handle_reg(&hspi1);
-  // ld3320_reset();
-
-  // syn_handle_uart(&huart2);
-  // voice_compound_cmd("���");
-
-  // syn6288_inquiry();
-
   Ov7725_init();
   ov7725_mode_config();
   camera_mode = get_camera_mode();
 
-  registCallback(EVENT_PicData, pic_recv);
+  servo_angle_row(90, 0);
+  servo_angle_row(90, 1);
+
+  display_init();
+  // registCallback(EVENT_PicData, pic_recv);
+#endif
+  // ld3320_handle_reg(&hspi1);
+  // ld3320_reset();
+
+  syn_handle_uart(&huart2);
+   voice_compound_cmd("语音初始化完成");
+
+  // syn6288_inquiry();
+
+   
+
+   APP_Button_SetUp();
+   MiaoUi_Setup(&ui);
 }
 
-extern TIME_DATA_T image_data;
-extern TIME_DATA_T image_show;
-extern TIME_DATA_T servo_ctrl;
-void               core_loop(void) {
-  // servo_test();
-
-  // if (image_process(&camera_mode)) {
-  //   image_display(get_picture());
-  //   servo_pid_calculate();
-  // }
-
+void core_loop(void) {
   if (true == get_pic_state()) {
-    image_display(get_picture());
+    app_image_display();
   }
-  process_event();
-  // process_table();
 
-  // if (image_data.state) {
-  //   if (image_get(camera_mode.lcd_sx,     //
-  //                               camera_mode.lcd_sy,     //
-  //                               camera_mode.cam_width,  //
-  //                               camera_mode.cam_height))
-  //     trace_picture();
-  //   image_data.state = false;
-  // }
-  // if (image_show.state) {
-  //   image_show.state = false;
-  // }
-  // if (servo_ctrl.state && finding_flag) {
-  //   servo_ctrl.state = false;
-  // }
+  ui_loop(&ui);
 
-  //
+  // process_event();
 
-  //  voice_apply();
-  //  syn_recv();
+  servo_test();
   debug_light();
 }
 

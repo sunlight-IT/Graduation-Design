@@ -2,11 +2,10 @@
 
 #include <stdint.h>
 
-#include "core/module_middle/servo_apply/servo_apply.h"
 #include "stm32f1xx_hal.h"
 
 #define SERVO_DUTY_MIN 25   // 0.5ms
-#define SERVO_DUTY_MAX 100  // 2ms
+#define SERVO_DUTY_MAX 125  // 2ms
 
 #define ANGLE_MAX 180
 #define ANGLE_MIN 0

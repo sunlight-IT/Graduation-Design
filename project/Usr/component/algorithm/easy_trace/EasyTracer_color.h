@@ -1,44 +1,44 @@
 #ifndef EASY_TRACERED_H
 #define EASY_TRACERED_H
 
-#define IMG_X 0    // Í¼Æ¬x×ø±ê
-#define IMG_Y 0    // Í¼Æ¬y×ø±ê
-#define IMG_W 120  // Í¼Æ¬¿í¶È
-#define IMG_H 120  // Í¼Æ¬¸ß¶È
+#define IMG_X 0    // Í¼Æ¬xï¿½ï¿½ï¿½ï¿½
+#define IMG_Y 0    // Í¼Æ¬yï¿½ï¿½ï¿½ï¿½
+#define IMG_W 120  // Í¼Æ¬ï¿½ï¿½ï¿½ï¿½
+#define IMG_H 120  // Í¼Æ¬ï¿½ß¶ï¿½
 
-#define ALLOW_FAIL_PER 3  // ÈÝ´íÂÊ£¬Ã¿1<<ALLOW_FAIL_PER¸öµãÔÊÐí³öÏÖÒ»¸ö´íÎóµã£¬ÈÝ´íÂÊÔ½´óÔ½ÈÝÒ×Ê¶±ð£¬µ«´íÎóÂÊÔ½´ó
-#define ITERATE_NUM    7  // µü´ú´ÎÊý£¬µü´ú´ÎÊýÔ½¶àÊ¶±ðÔ½¾«È·£¬µ«¼ÆËãÁ¿Ô½´ó
-
-typedef struct {
-  unsigned char H_MIN1;  // Ä¿±ê×îÐ¡É«µ÷
-  unsigned char H_MAX1;  // Ä¿±ê×î´óÉ«µ÷
-
-  unsigned char H_MIN2;  // Ä¿±ê×îÐ¡É«µ÷
-  unsigned char H_MAX2;  // Ä¿±ê×î´óÉ«µ÷
-
-  unsigned char S_MIN;  // Ä¿±ê×îÐ¡±¥ºÍ¶È
-  unsigned char S_MAX;  // Ä¿±ê×î´ó±¥ºÍ¶È
-
-  unsigned char L_MIN;  // Ä¿±ê×îÐ¡ÁÁ¶È
-  unsigned char L_MAX;  // Ä¿±ê×î´óÁÁ¶È
-
-  unsigned int WIDTH_MIN;  // Ä¿±ê×îÐ¡¿í¶È
-  unsigned int HIGHT_MIN;  // Ä¿±ê×îÐ¡¸ß¶È
-
-  unsigned int WIDTH_MAX;  // Ä¿±ê×î´ó¿í¶È
-  unsigned int HIGHT_MAX;  // Ä¿±ê×î´ó¸ß¶È
-
-} TARGET_CONDI;  // ÅÐ¶¨ÎªµÄÄ¿±êÌõ¼þ
+#define ALLOW_FAIL_PER 3  // ï¿½Ý´ï¿½ï¿½Ê£ï¿½Ã¿1<<ALLOW_FAIL_PERï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ã£¬ï¿½Ý´ï¿½ï¿½ï¿½Ô½ï¿½ï¿½Ô½ï¿½ï¿½ï¿½ï¿½Ê¶ï¿½ð£¬µï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô½ï¿½ï¿½
+#define ITERATE_NUM    7  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô½ï¿½ï¿½Ê¶ï¿½ï¿½Ô½ï¿½ï¿½È·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô½ï¿½ï¿½
 
 typedef struct {
-  unsigned int x;  // Ä¿±êµÄx×ø±ê
-  unsigned int y;  // Ä¿±êµÄy×ø±ê
-  unsigned int w;  // Ä¿±êµÄ¿í¶È
-  unsigned int h;  // Ä¿±êµÄ¸ß¶È
-} RESULT;          // Ê¶±ð½á¹û
+  unsigned char H_MIN1;  // Ä¿ï¿½ï¿½ï¿½ï¿½Ð¡É«ï¿½ï¿½
+  unsigned char H_MAX1;  // Ä¿ï¿½ï¿½ï¿½ï¿½ï¿½É«ï¿½ï¿½
 
-// ½«Ê¶±ðÌõ¼þÐ´ÈëConditionÖ¸ÏòµÄ½á¹¹ÌåÖÐ£¬¸Ãº¯Êý½«·µ»ØÄ¿±êµÄx£¬y×ø±êºÍ³¤¿í
-// ·µ»Ø1Ê¶±ð³É¹¦£¬·µ»Ø1Ê¶±ðÊ§°Ü
+  unsigned char H_MIN2;  // Ä¿ï¿½ï¿½ï¿½ï¿½Ð¡É«ï¿½ï¿½
+  unsigned char H_MAX2;  // Ä¿ï¿½ï¿½ï¿½ï¿½ï¿½É«ï¿½ï¿½
+
+  unsigned char S_MIN;  // Ä¿ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½Í¶ï¿½
+  unsigned char S_MAX;  // Ä¿ï¿½ï¿½ï¿½ï¿½ó±¥ºÍ¶ï¿½
+
+  unsigned char L_MIN;  // Ä¿ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½
+  unsigned char L_MAX;  // Ä¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+
+  unsigned int WIDTH_MIN;  // Ä¿ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½
+  unsigned int HIGHT_MIN;  // Ä¿ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ß¶ï¿½
+
+  unsigned int WIDTH_MAX;  // Ä¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+  unsigned int HIGHT_MAX;  // Ä¿ï¿½ï¿½ï¿½ï¿½ï¿½ß¶ï¿½
+
+} TARGET_CONDI;  // ï¿½Ð¶ï¿½Îªï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+
+typedef struct {
+  unsigned int x;  // Ä¿ï¿½ï¿½ï¿½xï¿½ï¿½ï¿½ï¿½
+  unsigned int y;  // Ä¿ï¿½ï¿½ï¿½yï¿½ï¿½ï¿½ï¿½
+  unsigned int w;  // Ä¿ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½
+  unsigned int h;  // Ä¿ï¿½ï¿½Ä¸ß¶ï¿½
+} RESULT;          // Ê¶ï¿½ï¿½ï¿½ï¿½
+
+// ï¿½ï¿½Ê¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð´ï¿½ï¿½ConditionÖ¸ï¿½ï¿½Ä½á¹¹ï¿½ï¿½ï¿½Ð£ï¿½ï¿½Ãºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½xï¿½ï¿½yï¿½ï¿½ï¿½ï¿½Í³ï¿½ï¿½ï¿½
+// ï¿½ï¿½ï¿½ï¿½1Ê¶ï¿½ï¿½É¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½1Ê¶ï¿½ï¿½Ê§ï¿½ï¿½
 int Trace(const TARGET_CONDI *Condition, RESULT *Resu);
 int Trace_bina(const TARGET_CONDI *Condition, RESULT *Resu);
 

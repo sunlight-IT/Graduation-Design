@@ -1,7 +1,6 @@
 #include "EasyTracer_color.h"
 
 #include "core/module_driver/lcd_driver/lcd_drive.h"
-#include "core/module_middle/image_display/image_display.h"
 #define min3v(v1, v2, v3) ((v1) > (v2) ? ((v2) > (v3) ? (v3) : (v2)) : ((v1) > (v3) ? (v3) : (v1)))  // 取最大值
 #define max3v(v1, v2, v3) ((v1) < (v2) ? ((v2) < (v3) ? (v3) : (v2)) : ((v1) < (v3) ? (v3) : (v1)))  // 取最小值
 

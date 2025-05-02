@@ -22,6 +22,8 @@
 #include "stm32f1xx_it.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "component/log/my_log.h"
+#include "component/time_slice/time_slice.h"
 #include "core/module_driver/camera_driver/AL422B_fifo/AL244B_fifo_driver.h"
 #include "core/module_driver/voice_driver/ld3320_driver.h"
 #include "core/module_driver/voice_driver/syn6288_driver/syn6288_driver.h"
@@ -58,6 +60,7 @@
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
+extern TIM_HandleTypeDef htim3;
 extern UART_HandleTypeDef huart1;
 extern UART_HandleTypeDef huart2;
 /* USER CODE BEGIN EV */
@@ -87,7 +90,7 @@ void NMI_Handler(void)
 void HardFault_Handler(void)
 {
   /* USER CODE BEGIN HardFault_IRQn 0 */
-
+  LOGE("Hard error");
   /* USER CODE END HardFault_IRQn 0 */
   while (1)
   {
@@ -102,7 +105,7 @@ void HardFault_Handler(void)
 void MemManage_Handler(void)
 {
   /* USER CODE BEGIN MemoryManagement_IRQn 0 */
-
+  LOGE("MEM error");
   /* USER CODE END MemoryManagement_IRQn 0 */
   while (1)
   {
@@ -117,7 +120,7 @@ void MemManage_Handler(void)
 void BusFault_Handler(void)
 {
   /* USER CODE BEGIN BusFault_IRQn 0 */
-
+  LOGE("Bus error");
   /* USER CODE END BusFault_IRQn 0 */
   while (1)
   {
@@ -190,7 +193,7 @@ void SysTick_Handler(void)
   /* USER CODE END SysTick_IRQn 0 */
   HAL_IncTick();
   /* USER CODE BEGIN SysTick_IRQn 1 */
-
+  // apply_slice();
   /* USER CODE END SysTick_IRQn 1 */
 }
 
@@ -226,6 +229,20 @@ void EXTI3_IRQHandler(void)
   /* USER CODE BEGIN EXTI3_IRQn 1 */
 
   /* USER CODE END EXTI3_IRQn 1 */
+}
+
+/**
+  * @brief This function handles TIM3 global interrupt.
+  */
+void TIM3_IRQHandler(void)
+{
+  /* USER CODE BEGIN TIM3_IRQn 0 */
+
+  /* USER CODE END TIM3_IRQn 0 */
+  HAL_TIM_IRQHandler(&htim3);
+  /* USER CODE BEGIN TIM3_IRQn 1 */
+
+  /* USER CODE END TIM3_IRQn 1 */
 }
 
 /**

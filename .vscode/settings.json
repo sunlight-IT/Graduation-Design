@@ -41,7 +41,30 @@
         "service_apply.h": "c",
         "fsm_middle.h": "c",
         "middle_event_process.h": "c",
-        "middle_table.h": "c"
+        "middle_table.h": "c",
+        "oled_driver.h": "c",
+        "item.h": "c",
+        "ui.h": "c",
+        "ui_conf.h": "c",
+        "custom.h": "c",
+        "fonts.h": "c",
+        "indevdriver.h": "c",
+        "u8g2.h": "c",
+        "stdbool.h": "c",
+        "version.h": "c",
+        "driver_tick.h": "c",
+        "stm32f1xx.h": "c",
+        "time.h": "c",
+        "stm32f1xx_hal_conf.h": "c",
+        "stm32f1xx_hal_tim.h": "c",
+        "driver_button.h": "c",
+        "multi_button.h": "c",
+        "app_button.h": "c",
+        "app_schedule.h": "c",
+        "servo_apply.h": "c",
+        "app_image_display.h": "c",
+        "middle_fsm.h": "c"
     },
-    "C_Cpp.default.compilerPath": ""
+    "C_Cpp.default.compilerPath": "",
+    "files.encoding": "utf8"
 }

@@ -1,14 +1,9 @@
 #include "middle_fsm.h"
 
-// FSM_STATE_t motor_move(void) {
-//   static enum {
-//     START = 0,
-//     SET_SPEED,
-//     SET_MOVE,
-//   } s_State = {START};
-//   switch (s_State) {
-//     case START:
-//     case SET_SPEED:
-//     case SET_MOVE:
-//   }
-// }
+/****************************/
+/*
+1. 创建一个状态机控制块需要的数据
+  a. 运行所有状态
+  b. 状态运行函数
+  c. 状态改变
+*/

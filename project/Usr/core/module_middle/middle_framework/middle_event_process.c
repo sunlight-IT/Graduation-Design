@@ -4,13 +4,12 @@
 #include <string.h>
 
 #include "component/log/my_log.h"
-#include "core/module_middle/image_display/image_display.h"
 
 static EVENT_t eventQueue[EVENT_QUEUE_SIZE];
 static uint8_t eventQueueHead = 0;
 static uint8_t eventQueueTail = 0;
 
-static EVENT_t m_cbs[EVENT_QUEUE_SIZE];  // ÊÂ¼þ¶ÓÁÐ±í
+static EVENT_t m_cbs[EVENT_QUEUE_SIZE];  // ï¿½Â¼ï¿½ï¿½ï¿½ï¿½Ð±ï¿½
 
 void registCallback(EVENT_TYPE type, event_callback cb) {
   m_cbs[type].type     = type;
@@ -29,10 +28,10 @@ void enterQueueEvent(EVENT_TYPE type) {
 
 void process_event(void) {
   while (eventQueueTail != eventQueueHead) {
-    LOGI("EVENT PROCESS");
+    // LOGI("EVENT PROCESS");
     EVENT_t event = eventQueue[eventQueueTail];
     if (event.callback != NULL) {
-      event.callback();  // µ÷ÓÃ»Øµ÷º¯Êý
+      event.callback();  // ï¿½ï¿½ï¿½Ã»Øµï¿½ï¿½ï¿½ï¿½ï¿½
     }
     eventQueueTail = (eventQueueTail + 1) % EVENT_QUEUE_SIZE;
   }

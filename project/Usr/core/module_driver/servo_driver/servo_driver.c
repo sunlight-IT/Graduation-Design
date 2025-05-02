@@ -33,7 +33,7 @@ void duty_output(uint32_t duty, int option) {
 }
 
 void servo_angle_row(uint16_t angle, int option) {
-  float    angle_tmp = 0.1 * angle;
+  float    angle_tmp = angle;
   uint32_t duty      = 0;
   if (angle_tmp >= ANGLE_MAX)
     angle_tmp = ANGLE_MAX;
@@ -46,21 +46,28 @@ void servo_angle_row(uint16_t angle, int option) {
 
 // block type
 void servo_test(void) {
-  if (flages) {
-    for (int i = 10; i < 170; i++) {
-      servo_angle_row(i, 0);
-      servo_angle_row(i, 1);
-      HAL_Delay(10);
-    }
-    flages = 0;
-  } else {
-    for (int i = 170; i > 10; i--) {
-      servo_angle_row(i, 0);
-      servo_angle_row(i, 1);
-      HAL_Delay(10);
-    }
-    flages = 1;
-  }
+  // if (flages) {
+  //   for (int i = 10; i < 170; i++) {
+  //     servo_angle_row(i, 0);
+  //     servo_angle_row(i, 1);
+  //     HAL_Delay(1);
+  //   }
+  //   flages = 0;
+  // } else {
+  //   for (int i = 170; i > 10; i--) {
+  //     servo_angle_row(i, 0);
+  //     servo_angle_row(i, 1);
+  //     HAL_Delay(1);
+  //   }
+  //   flages = 1;
+  // }
+
+  servo_angle_row(0, 0);
+  servo_angle_row(0, 1);
+  HAL_Delay(1000);
+  servo_angle_row(179, 0);
+  servo_angle_row(179, 1);
+  HAL_Delay(1000);
 }
 
 // unblock type
