@@ -3,15 +3,34 @@
 #include "Core/module_middle/image_display/middle_image.h"
 #include "component/algorithm/easy_trace/EasyTracer_color.h"
 
-static TARGET_CONDI target_conditon = {0, 20, 210, 255, 100, 255, 60, 200, 10, 10, 100, 100};
+static TARGET_CONDI target_conditon_red = {0, 20, 210, 255, 100, 255, 60, 200, 10, 10, 100, 100};
+static TARGET_CONDI target_conditon_yellow = {0, 20, 210, 255, 100, 255, 60, 200, 10, 10, 100, 100};
+static TARGET_CONDI target_conditon_blue = {0, 20, 210, 255, 100, 255, 60, 200, 10, 10, 100, 100};
 // static uint16_t     picture_data[PIC_W][PIC_H];
 // static uint8_t      picture_rgb_binarization[PIC_W][PIC_H];
+static TARGET_CONDI *now_target = &target_conditon_red;
 static RESULT   result;
 static POSITION result_pos;
 
+void now_target_set(uint32_t color_type) {
+  switch(color_type) {
+    case COLOR_RED:
+      now_target = &target_conditon_red;
+      break;
+    case COLOR_YELLOW:
+      now_target = &target_conditon_yellow;
+      break;
+    case COLOR_BLUE:
+      now_target = &target_conditon_blue;
+      break;
+    default:
+      now_target = &target_conditon_red;
+      break;
+  }
+}
 bool app_trace_picture(void) {
   // ZLOGE(TAG, "trace ");
-  if (!Trace(&target_conditon, &result)) {
+  if (!Trace(now_target, &result)) {
     return false;
   }
 
@@ -38,3 +57,5 @@ void app_image_display(void) {
   lcd_show_num(5, 195, RGB_PIC_CENTER_X, 2, 12);
   lcd_show_num(22, 195, RGB_PIC_CENTER_Y, 2, 12);
 }
+
+

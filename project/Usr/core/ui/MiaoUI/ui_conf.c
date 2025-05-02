@@ -45,6 +45,19 @@ ui_item_t HomeHead_Item, SystemHead_Item, System_Item, Github_Item;
 ui_item_t Contrast_Item;
 
 /*******************MY_self********************/
+
+
+typedef struct {
+  const char *name;
+  uint32_t  color_id;
+}color_element_info_t;
+
+color_element_info_t color_element_info[3] = {
+  {"Red", COLOR_RED},
+  {"Yellow", COLOR_YELLOW},
+  {"Blue", COLOR_BLUE},
+};
+
 ui_item_t Color_Item[3];
 ui_item_t Open_Item;
 /***************************************/
@@ -71,35 +84,40 @@ void Create_Parameter(ui_t *ui) {
   Create_element(&Contrast_Item, &Contrast_element);
 
   /*******************MY_self********************/
+ 
+
   static int       ColorRed = 0;
   static ui_data_t ColorRed_data;
-  ColorRed_data.name       = "ColorRed";
+  ColorRed_data.name       = color_element_info[COLOR_RED].name;
   ColorRed_data.ptr        = &ColorRed;
   ColorRed_data.dataType   = UI_DATA_SWITCH;
   ColorRed_data.actionType = UI_DATA_ACTION_RW;
   static ui_element_t Color_element;
   Color_element.data = &ColorRed_data;
-  Create_element(&Color_Item[0], &Color_element);
+  Create_element(&Color_Item[COLOR_RED], &Color_element);
+  Color_Item[COLOR_RED].id = color_element_info[COLOR_RED].color_id;
 
   static int       ColorYellow = 0;
   static ui_data_t ColorYellow_data;
-  ColorYellow_data.name       = "ColorYellow";
+  ColorYellow_data.name       = color_element_info[COLOR_YELLOW].name;
   ColorYellow_data.ptr        = &ColorYellow;
   ColorYellow_data.dataType   = UI_DATA_SWITCH;
   ColorYellow_data.actionType = UI_DATA_ACTION_RW;
   static ui_element_t ColorYellow_element;
   ColorYellow_element.data = &ColorYellow_data;
-  Create_element(&Color_Item[1], &ColorYellow_element);
+  Create_element(&Color_Item[COLOR_YELLOW], &ColorYellow_element);
+  Color_Item[COLOR_YELLOW].id = color_element_info[COLOR_YELLOW].color_id;
 
   static int       ColorBlue = 0;
   static ui_data_t ColorBlue_data;
-  ColorBlue_data.name       = "ColorBlue";
+  ColorBlue_data.name       = color_element_info[COLOR_BLUE].name;
   ColorBlue_data.ptr        = &ColorBlue;
   ColorBlue_data.dataType   = UI_DATA_SWITCH;
   ColorBlue_data.actionType = UI_DATA_ACTION_RW;
   static ui_element_t ColorBlue_element;
   ColorBlue_element.data = &ColorBlue_data;
-  Create_element(&Color_Item[2], &ColorBlue_element);
+  Create_element(&Color_Item[COLOR_BLUE], &ColorBlue_element);
+  Color_Item[COLOR_BLUE].id = color_element_info[COLOR_BLUE].color_id;
 
   // static int       OpenStart = 0;
   // static ui_data_t OpenStart_data;
@@ -151,9 +169,9 @@ void Create_MenuTree(ui_t *ui) {
 
   AddPage("[HomePage]", &Home_Page, UI_PAGE_TEXT);
   AddItem("[START]", UI_ITEM_LOOP_FUNCTION, &Open_Item, &Open_Item, &Home_Page, NULL, app_schedule);
-  AddItem(" -Red", UI_ITEM_DATA, NULL, &Color_Item[0], &Home_Page, NULL, NULL);
-  AddItem(" -Yellow", UI_ITEM_DATA, NULL, &Color_Item[1], &Home_Page, NULL, NULL);
-  AddItem(" -Blue", UI_ITEM_DATA, NULL, &Color_Item[2], &Home_Page, NULL, NULL);
+  AddItem(" -Red", UI_ITEM_DATA, NULL, &Color_Item[0], &Home_Page, NULL, app_clore_choose);
+  AddItem(" -Yellow", UI_ITEM_DATA, NULL, &Color_Item[1], &Home_Page, NULL, app_clore_choose);
+  AddItem(" -Blue", UI_ITEM_DATA, NULL, &Color_Item[2], &Home_Page, NULL, app_clore_choose);
 }
 
 void MiaoUi_Setup(ui_t *ui) {
