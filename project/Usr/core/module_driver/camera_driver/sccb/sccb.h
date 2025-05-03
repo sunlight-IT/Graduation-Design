@@ -3,25 +3,25 @@
 #include "gpio.h"
 #include "stdbool.h"
 
-#define GPIO_TYPE GPIOC
-#define SDIO_CLK  GPIO_PIN_6
-#define SDIO_DAT  GPIO_PIN_7
+#define SDIO_CLK           SDIO_C_Pin
+#define SDIO_DAT           SDIO_D_Pin
+#define SDIO_CLK_GPIO_Port SDIO_D_GPIO_Port
 
-#define SDIO_C(x) HAL_GPIO_WritePin(GPIO_TYPE, SDIO_CLK, (x))
-#define SDIO_D(x) HAL_GPIO_WritePin(GPIO_TYPE, SDIO_DAT, (x))
+#define SDIO_C(x) HAL_GPIO_WritePin(SDIO_CLK_GPIO_Port, SDIO_CLK, (x))
+#define SDIO_D(x) HAL_GPIO_WritePin(SDIO_CLK_GPIO_Port, SDIO_DAT, (x))
 
-#define SDIO_D_IN()           \
-  {                           \
-    GPIOC->CRL &= 0X0FFFFFFF; \
-    GPIOC->CRL |= 0X80000000; \
+#define SDIO_D_IN()                        \
+  {                                        \
+    SDIO_CLK_GPIO_Port->CRL &= 0XFF0FFFFF; \
+    SDIO_CLK_GPIO_Port->CRL |= 0X00800000; \
   }
-#define SDIO_D_OUT()          \
-  {                           \
-    GPIOC->CRL &= 0X0FFFFFFF; \
-    GPIOC->CRL |= 0X30000000; \
+#define SDIO_D_OUT()                       \
+  {                                        \
+    SDIO_CLK_GPIO_Port->CRL &= 0XFF0FFFFF; \
+    SDIO_CLK_GPIO_Port->CRL |= 0X00300000; \
   }
 
-#define SDIO_D_READ HAL_GPIO_ReadPin(GPIO_TYPE, SDIO_DAT)
+#define SDIO_D_READ HAL_GPIO_ReadPin(SDIO_CLK_GPIO_Port, SDIO_DAT)
 
 #define ADDR_OV7725 0x42
 

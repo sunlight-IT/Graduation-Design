@@ -57,6 +57,14 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define SDIO_C_Pin GPIO_PIN_2
+#define SDIO_C_GPIO_Port GPIOE
+#define SDIO_D_Pin GPIO_PIN_3
+#define SDIO_D_GPIO_Port GPIOE
+#define OV7725_RCLK_Pin GPIO_PIN_4
+#define OV7725_RCLK_GPIO_Port GPIOE
+#define OV7725_WEN_Pin GPIO_PIN_5
+#define OV7725_WEN_GPIO_Port GPIOE
 #define OV7725_DATA0_Pin GPIO_PIN_0
 #define OV7725_DATA0_GPIO_Port GPIOF
 #define OV7725_DATA1_Pin GPIO_PIN_1
@@ -73,23 +81,21 @@ void Error_Handler(void);
 #define OV7725_DATA6_GPIO_Port GPIOF
 #define OV7725_DATA7_Pin GPIO_PIN_7
 #define OV7725_DATA7_GPIO_Port GPIOF
-#define OV7725_VSYNC_Pin GPIO_PIN_3
-#define OV7725_VSYNC_GPIO_Port GPIOC
-#define OV7725_VSYNC_EXTI_IRQn EXTI3_IRQn
+#define OV7725_VSYNC_Pin GPIO_PIN_1
+#define OV7725_VSYNC_GPIO_Port GPIOA
+#define OV7725_VSYNC_EXTI_IRQn EXTI1_IRQn
 #define OV7725_RRST_Pin GPIO_PIN_2
 #define OV7725_RRST_GPIO_Port GPIOA
 #define OV7725_OE_Pin GPIO_PIN_3
 #define OV7725_OE_GPIO_Port GPIOA
+#define OV7725_WRST_Pin GPIO_PIN_4
+#define OV7725_WRST_GPIO_Port GPIOA
 #define VOICE_SCK_Pin GPIO_PIN_5
 #define VOICE_SCK_GPIO_Port GPIOA
 #define VOICE_MISO_Pin GPIO_PIN_6
 #define VOICE_MISO_GPIO_Port GPIOA
 #define VOICE_MOSI_Pin GPIO_PIN_7
 #define VOICE_MOSI_GPIO_Port GPIOA
-#define OV7725_WRST_Pin GPIO_PIN_4
-#define OV7725_WRST_GPIO_Port GPIOC
-#define OV7725_RCLK_Pin GPIO_PIN_5
-#define OV7725_RCLK_GPIO_Port GPIOC
 #define LCD_BL_Pin GPIO_PIN_0
 #define LCD_BL_GPIO_Port GPIOB
 #define VOICE_CS_Pin GPIO_PIN_1
@@ -98,18 +104,15 @@ void Error_Handler(void);
 #define VOICE_RST_GPIO_Port GPIOB
 #define VOICE_IRQ_Pin GPIO_PIN_11
 #define VOICE_IRQ_GPIO_Port GPIOF
+#define VOICE_IRQ_EXTI_IRQn EXTI15_10_IRQn
 #define KEY0_Pin GPIO_PIN_6
 #define KEY0_GPIO_Port GPIOG
 #define KEY1_Pin GPIO_PIN_7
 #define KEY1_GPIO_Port GPIOG
 #define KEY2_Pin GPIO_PIN_8
 #define KEY2_GPIO_Port GPIOG
-#define SDIO_C_Pin GPIO_PIN_6
-#define SDIO_C_GPIO_Port GPIOC
-#define SDIO_D_Pin GPIO_PIN_7
-#define SDIO_D_GPIO_Port GPIOC
-#define OV7725_WEN_Pin GPIO_PIN_3
-#define OV7725_WEN_GPIO_Port GPIOD
+#define OV7725_WEND3_Pin GPIO_PIN_3
+#define OV7725_WEND3_GPIO_Port GPIOD
 
 /* USER CODE BEGIN Private defines */
 

@@ -12,7 +12,7 @@ static _lcd_dev           lcddev;
 static uint8_t            data_8;
 static uint16_t           data_16;
 
-static uint16_t POINT_COLOR = 0x0000, BACK_COLOR = 0xFFFF;
+static uint16_t POINT_COLOR = 0x0002, BACK_COLOR = 0xFFFF;
 static uint16_t DeviceCode;
 
 #if FSMC_LCD
@@ -306,7 +306,7 @@ void lcd_init(void) {
 
   lcd_direction(k_two_hundred_seventy);
   LCD_LED_DOWN;
-  lcd_clear(RED);
+  lcd_clear(YELLOW);
 }
 
 void lcd_set_cursor(uint16_t Xpos, uint16_t Ypos) { lcd_set_windows(Xpos, Ypos, Xpos, Ypos); }

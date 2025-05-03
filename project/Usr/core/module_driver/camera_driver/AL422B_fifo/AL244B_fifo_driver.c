@@ -46,6 +46,6 @@ void vsync_exit(void) {
   } else if (n_vsync == 1) {
     FIFO_WE_L;
     n_vsync = 2;
-    enterQueueEvent(EVENT_PicData);
+    pic_recv();
   }
 }

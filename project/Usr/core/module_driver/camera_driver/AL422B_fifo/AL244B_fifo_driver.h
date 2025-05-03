@@ -17,18 +17,19 @@
   } while (0)
 
 // RCLK 一个周期完成一个字节数据
-#define FIFO_READ(RGB565)                                 \
-  do {                                                    \
-    RGB565 = 0;                                           \
-    FIFO_RCLK_L;                                          \
-    RGB565 = (OV7725_DATA_GPIO_Port->IDR) & 0xff00;       \
-    FIFO_RCLK_H;                                          \
-    FIFO_RCLK_L;                                          \
-    RGB565 |= (OV7725_DATA_GPIO_Port->IDR >> 8) & 0x00ff; \
-    FIFO_RCLK_H;                                          \
+#define FIFO_READ(RGB565)                            \
+  do {                                               \
+    RGB565 = 0;                                      \
+    FIFO_RCLK_L;                                     \
+    RGB565 = (OV7725_DATA_GPIO_Port->IDR & 0x00ff);  \
+    RGB565 <<= 8;                                    \
+    FIFO_RCLK_H;                                     \
+    FIFO_RCLK_L;                                     \
+    RGB565 |= (OV7725_DATA_GPIO_Port->IDR) & 0x00ff; \
+    FIFO_RCLK_H;                                     \
   } while (0)
 
-typedef uint8_t (*pic_data)[CAMERA_WIDTH];
+typedef uint8_t (*pic_data)[CAMERA_HEIGHT];
 
 void ov7725_fifo_init(void);
 

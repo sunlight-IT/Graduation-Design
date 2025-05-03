@@ -164,6 +164,7 @@ bool sccb_read_byte(uint8_t read_addr, uint8_t *read_buf, uint16_t len) {
   }
   if (!sccb_send_byte(ADDR_OV7725)) {
     ErrorHanding(TAG, "sccb_send_byte error1");
+
     return false;
   }
   // if (!sccb_wait_ack()) {
@@ -173,6 +174,7 @@ bool sccb_read_byte(uint8_t read_addr, uint8_t *read_buf, uint16_t len) {
   // }
   if (!sccb_send_byte(read_addr)) {
     ErrorHanding(TAG, "sccb_send_byte error2");
+
     return false;
   }
   // sccb_delay();
@@ -189,6 +191,7 @@ bool sccb_read_byte(uint8_t read_addr, uint8_t *read_buf, uint16_t len) {
 
   if (!sccb_send_byte(ADDR_OV7725 | 0x01)) {
     ErrorHanding(TAG, "sccb_send_byte error3");
+
     return false;
   }
   // if (!sccb_wait_ack()) {

@@ -132,15 +132,18 @@ bool Ov7725_init(void) {
 
   if (0 == sccb_write_byte(0x12, 0x80)) {
     ErrorHanding(TAG, "sccb_write_byte error");
+
     return false;
   }
   if (0 == sccb_read_byte(0x0b, &ID, 1)) {
     ErrorHanding(TAG, "sccb_read_byte error");
+
     return false;
   }
 
   if (ID != OV7725_ID) {
     ErrorHanding(TAG, "ID error");
+
     return false;
   }
   ZLOGI(TAG, "%02x", ID);

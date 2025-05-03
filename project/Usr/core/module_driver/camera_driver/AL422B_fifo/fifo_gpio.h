@@ -6,7 +6,7 @@
 RE 引脚和 WEN 引脚为一体， WEN高电平时写使能，WEN 低电平时 读使能
 */
 
-#define OV7725_DATA_GPIO_Port GPIOD
+#define OV7725_DATA_GPIO_Port GPIOF
 
 // #define FIFO_OE(x)   HAL_GPIO_WritePin(OV7725_OE_GPIO_Port, OV7725_OE_Pin, x)
 // #define FIFO_WRST(x) HAL_GPIO_WritePin(OV7725_WRST_GPIO_Port, OV7725_WRST_Pin, x)

@@ -8,7 +8,7 @@
 
 #define TAG "Image_display"
 
-#define min3v(v1, v2, v3) ((v1) > (v2) ? ((v2) > (v3) ? (v3) : (v2)) : ((v1) > (v3) ? (v3) : (v1)))  // ȡ����?
+#define min3v(v1, v2, v3) ((v1) > (v2) ? ((v2) > (v3) ? (v3) : (v2)) : ((v1) > (v3) ? (v3) : (v1)))  // ȡ����?
 #define max3v(v1, v2, v3) ((v1) < (v2) ? ((v2) < (v3) ? (v3) : (v2)) : ((v1) < (v3) ? (v3) : (v1)))  // ȡ��Сֵ
 
 static TARGET_CONDI target_conditon = {0, 20, 210, 255, 100, 255, 60, 200, 10, 10, 100, 100};
@@ -48,10 +48,10 @@ void image_display_bin(void) {
   lcd_set_windows(BIN_SHOW_X, 0, BIN_SHOW_X + PIC_W - 1, 0 + PIC_H - 1);
   for (i = 0; i < PIC_W; i++) {
     for (j = 0; j < PIC_H; j++) {
-      read_color(i, j, &rgb_tmp);  
+      read_color(i, j, &rgb_tmp);
       rgb_to_hsl(&rgb_tmp, &hsl_tmp);
       // picture_rgb_binarization[i][j] = color_match_bin(&hsl_tmp);
-      // lcd_write_data_16(picture_rgb_binarization[j][i]);  
+      // lcd_write_data_16(picture_rgb_binarization[j][i]);
       lcd_write_data_16(color_match_bin(&hsl_tmp));
     }
   }
@@ -63,7 +63,7 @@ void image_display_rgb(void) {
   lcd_set_windows(RGB_SHOW_X, RGB_SHOW_Y, RGB_SHOW_X + PIC_W - 1, RGB_SHOW_Y + PIC_H - 1);
   for (i = 0; i < PIC_W; i++)
     for (j = 0; j < PIC_H; j++) {
-      tmp_data |= pic[j][i] << 8;
+      tmp_data = *((*(pic + j) + i));  // pic[j][i];
       lcd_write_data_16(tmp_data);
     }
 }
@@ -79,8 +79,8 @@ static void rgb_to_hsl(const rgb_t* Rgb, hsl_t* Hsl) {
   int b = Rgb->b;  // ��ȡR��G��Bֵ
 
   maxVal = max3v(r, g, b);
-  minVal = min3v(r, g, b);   // ��ȡRGB�������?/��Сֵ
-  difVal = maxVal - minVal;  // ���������Сֵ�Ĳ��?
+  minVal = min3v(r, g, b);   // ��ȡRGB�������?/��Сֵ
+  difVal = maxVal - minVal;  // ���������Сֵ�Ĳ��?
 
   // ��������
   l = (maxVal + minVal) * 240 / 255 / 2;
@@ -127,5 +127,5 @@ static uint8_t color_match_bin(hsl_t* hsl) {
       && hsl->l > target_conditon.L_MIN && hsl->l < target_conditon.L_MAX) {
     return 0;
   } else
-    return 255;
+    return 1000;
 }

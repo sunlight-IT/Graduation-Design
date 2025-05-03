@@ -44,10 +44,10 @@ void        core_init(void) {
   // servo_y_handle_reg(&htim2);
   /******************************* */
   lcd_init();
-
-  // Ov7725_init();
-  // ov7725_mode_config();
-  // camera_mode = get_camera_mode();
+  if (Ov7725_init()) {
+  }
+  ov7725_mode_config();
+  camera_mode = get_camera_mode();
 
   // servo_angle_row(90, 0);
   // servo_angle_row(90, 1);
@@ -68,13 +68,15 @@ void        core_init(void) {
 }
 
 void core_loop(void) {
-  // if (true == get_pic_state()) {
-  //   app_image_display();
-  // }
+  if (true == get_pic_state()) {
+    app_image_display();
+    clear_pic_state();
+  }
 
   // ui_loop(&ui);
 
   // servo_test();
+  // lcd_clear(YELLOW);
   debug_light();
 }
 
