@@ -36,49 +36,45 @@ extern bool finding_flag;
 static ui_t ui;
 void        core_init(void) {
 #if DEBUG_OLED
-  HAL_TIM_Base_Start_IT(&htim3);
+  // HAL_TIM_Base_Start_IT(&htim3);
 
-  lcd_handle_reg(&hspi2);
+  // lcd_handle_reg(&hspi2);
 
-  servo_x_handle_reg(&htim4);
-  servo_y_handle_reg(&htim2);
+  // servo_x_handle_reg(&htim4);
+  // servo_y_handle_reg(&htim2);
   /******************************* */
   lcd_init();
 
-  Ov7725_init();
-  ov7725_mode_config();
-  camera_mode = get_camera_mode();
+  // Ov7725_init();
+  // ov7725_mode_config();
+  // camera_mode = get_camera_mode();
 
-  servo_angle_row(90, 0);
-  servo_angle_row(90, 1);
+  // servo_angle_row(90, 0);
+  // servo_angle_row(90, 1);
 
-  display_init();
-  // registCallback(EVENT_PicData, pic_recv);
+  // display_init();
+
 #endif
   // ld3320_handle_reg(&hspi1);
   // ld3320_reset();
 
-  syn_handle_uart(&huart2);
-   voice_compound_cmd("语音初始化完成");
+  // syn_handle_uart(&huart3);
+  // voice_compound_cmd("语音初始化完成");
 
-  // syn6288_inquiry();
+  //  syn6288_inquiry();
 
-   
-
-   APP_Button_SetUp();
-   MiaoUi_Setup(&ui);
+  // APP_Button_SetUp();
+  // MiaoUi_Setup(&ui);
 }
 
 void core_loop(void) {
-  if (true == get_pic_state()) {
-    app_image_display();
-  }
+  // if (true == get_pic_state()) {
+  //   app_image_display();
+  // }
 
-  ui_loop(&ui);
+  // ui_loop(&ui);
 
-  // process_event();
-
-  servo_test();
+  // servo_test();
   debug_light();
 }
 

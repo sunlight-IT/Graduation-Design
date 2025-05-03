@@ -34,6 +34,7 @@
 
 /*******************MY_self********************/
 #include "Core/app/app_schedule.h"
+#include "Core/app/app_image_display.h"
 /***************************************/
 
 /* Page */

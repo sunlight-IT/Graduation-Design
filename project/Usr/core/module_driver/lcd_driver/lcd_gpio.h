@@ -2,11 +2,12 @@
 
 #include "gpio.h"
 
-#define LCD_MODE GPIOB
-#define LCD_CS   GPIO_PIN_11
-#define LCD_RS   GPIO_PIN_10
-#define LCD_RST  GPIO_PIN_12
-#define LCD_LED  GPIO_PIN_9
+#define LCD_MODE   GPIOB
+#define LCD_CS     GPIO_PIN_11
+#define LCD_RS     GPIO_PIN_10
+#define LCD_RST    GPIO_PIN_12
+#define LCD_LED    GPIO_PIN_9
+#define LCD_LED_BL GPIO_PIN_0
 
 //-----------------LCD端口定义----------------
 // #define GPIO_TYPE GPIOB  // GPIO组类型
@@ -43,9 +44,9 @@
 // #define LCD_CS_DOWN  HAL_GPIO_WritePin(LCD_MODE, LCD_CS, RESET)
 // #define LCD_RS_DOWN  HAL_GPIO_WritePin(LCD_MODE, LCD_RS, RESET)
 // #define LCD_RST_DOWN HAL_GPIO_WritePin(LCD_MODE, LCD_RST, RESET)
-#define LCD_LED_DOWN HAL_GPIO_WritePin(GPIO_TYPE, LCD_LED, RESET)
+#define LCD_LED_DOWN HAL_GPIO_WritePin(LCD_MODE, LCD_LED_BL, RESET)
 
 // #define LCD_CS_UP  HAL_GPIO_WritePin(LCD_MODE, LCD_CS, SET)
 // #define LCD_RS_UP  HAL_GPIO_WritePin(LCD_MODE, LCD_RS, SET)
 // #define LCD_RST_UP HAL_GPIO_WritePin(LCD_MODE, LCD_RST, SET)
-#define LCD_LED_UP HAL_GPIO_WritePin(LCD_MODE, LCD_LED, SET)
+#define LCD_LED_UP HAL_GPIO_WritePin(LCD_MODE, LCDLCD_LED_BL_LED, SET)

@@ -2,7 +2,7 @@
 
 #include "gpio.h"
 
-#define IIC_PORT GPIOE
+#define IIC_PORT GPIOF
 #define IIC_SCL  GPIO_PIN_14
 #define IIC_SDA  GPIO_PIN_15
 
