@@ -18,23 +18,23 @@ static int32_t            asr_status = k_asr_none;
 static SPI_HandleTypeDef* m_spi;
 static uint8_t            nLD_Mode = LD_MODE_IDLE;
 
-// ÕâÀï¿ÉÒÔÐÞ¸Ä¶ÔÓ¦µÄÓïÒôÖ¸Áî
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ¸Ä¶ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½
 static const voidce_cmd_code_t voice_cmd_data[] = {
-    CMD_DATA_CFG("xiao jie", k_code_cmd, "ÊÕµ½"),  //
-    // CMD_DATA_CFG("dai ma ce shi", k_code_dmcs, "´úÂë²âÊÔ³É¹¦"),  //
-    // CMD_DATA_CFG("ce shi wan bi", k_code_cswb, "²âÊÔÍê±Ï"),      //
+    CMD_DATA_CFG("xiao jie", k_code_cmd, "ï¿½Õµï¿½"),  //
+    // CMD_DATA_CFG("dai ma ce shi", k_code_dmcs, "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô³É¹ï¿½"),  //
+    // CMD_DATA_CFG("ce shi wan bi", k_code_cswb, "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"),      //
 
-    // CMD_DATA_CFG("bei jing", k_code_1, "±±¾©"),   //
-    // CMD_DATA_CFG("shang hai", k_code_2, "ÉÏº£"),  //
-    // CMD_DATA_CFG("kai deng", k_code_3, "¿ªµÆ"),   //
-    // CMD_DATA_CFG("guan deng", k_code_4, "¹ØµÆ"),  //
-    CMD_DATA_CFG("ni hao", k_code_dmcs, "´úÂë²âÊÔ³É¹¦"),  //
-    CMD_DATA_CFG("ni hao", k_code_cswb, "²âÊÔÍê±Ï"),      //
+    // CMD_DATA_CFG("bei jing", k_code_1, "ï¿½ï¿½ï¿½ï¿½"),   //
+    // CMD_DATA_CFG("shang hai", k_code_2, "ï¿½Ïºï¿½"),  //
+    // CMD_DATA_CFG("kai deng", k_code_3, "ï¿½ï¿½ï¿½ï¿½"),   //
+    // CMD_DATA_CFG("guan deng", k_code_4, "ï¿½Øµï¿½"),  //
+    CMD_DATA_CFG("ni hao", k_code_dmcs, "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô³É¹ï¿½"),  //
+    CMD_DATA_CFG("ni hao", k_code_cswb, "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"),    //
 
-    CMD_DATA_CFG("ni hao", k_code_1, "±±¾©"),  //
-    CMD_DATA_CFG("ni hao", k_code_2, "ÉÏº£"),  //
-    CMD_DATA_CFG("ni hao", k_code_3, "¿ªµÆ"),  //
-    CMD_DATA_CFG("ni hao", k_code_4, "¹ØµÆ"),  //
+    CMD_DATA_CFG("ni hao", k_code_1, "ï¿½ï¿½ï¿½ï¿½"),  //
+    CMD_DATA_CFG("ni hao", k_code_2, "ï¿½Ïºï¿½"),   //
+    CMD_DATA_CFG("ni hao", k_code_3, "ï¿½ï¿½ï¿½ï¿½"),  //
+    CMD_DATA_CFG("ni hao", k_code_4, "ï¿½Øµï¿½"),   //
 };
 
 static const uint8_t CMD_DATA_NUM = sizeof(voice_cmd_data) / sizeof(voice_cmd_data[0]);
@@ -46,7 +46,7 @@ static void LD3320_WR_REG(uint8_t byte) {
   uint8_t i;
   // LD_Delay();
   if (HAL_SPI_Transmit(m_spi, &data, 1, 100)) {
-    ErrorHanding(TAG, "HAL_SPI_Transmit error");
+    LOGE("HAL_SPI_Transmit error");
   }
 }
 static uint8_t LD3320_RD_REG(void) {
@@ -55,7 +55,7 @@ static uint8_t LD3320_RD_REG(void) {
   HAL_StatusTypeDef status;
 
   if ((status = HAL_SPI_Receive(m_spi, &temp, 1, 100))) {
-    ErrorHanding(TAG, "HAL_SPI_Receive error");
+    LOGE("HAL_SPI_Receive error");
   }
 
   return temp;
@@ -189,7 +189,7 @@ bool ld3320_asr_add_fixed(void) {
   uint8_t asr_add_len = 0;
   for (size_t index = 0; index < CMD_DATA_NUM; index++) {
     if (!ld3320_check_asr_busy_b2()) {
-      ZLOGW(TAG, "ld3320 busy");
+      LOGW("ld3320 busy");
       return false;
     }
 
@@ -200,13 +200,13 @@ bool ld3320_asr_add_fixed(void) {
     ld3320_write_reg(0x08, 0x00);
     HAL_Delay(1);
 
-    // Ò»¸öÒ»¸ö×Ö½ÚÐ´Èë 0xb9¼Ä´æÆ÷ÖÐ
+    // Ò»ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ö½ï¿½Ð´ï¿½ï¿½ 0xb9ï¿½Ä´ï¿½ï¿½ï¿½ï¿½ï¿½
     for (asr_add_len = 0; asr_add_len < CODE_LEN; asr_add_len++) {
       if (voice_cmd_data[index].cmd[asr_add_len] == 0) break;
       ld3320_write_reg(0x5, voice_cmd_data[index].cmd[asr_add_len]);
-      // ZLOGI(TAG, "%s", ld3320_read_reg(0x05));
+      // LOGI( "%s", ld3320_read_reg(0x05));
     }
-    // ZLOGI(TAG, "%d %s", voice_cmd_data[index].code, voice_cmd_data[index].cmd);
+    // LOGI( "%d %s", voice_cmd_data[index].code, voice_cmd_data[index].cmd);
     ld3320_write_reg(0xb9, asr_add_len);
     ld3320_write_reg(0xb2, 0xff);
     ld3320_write_reg(0x37, 0x04);
@@ -215,22 +215,22 @@ bool ld3320_asr_add_fixed(void) {
 }
 
 bool asr_recognize(void) {
-  for (size_t i = 0; i < 5; i++)  //	·ÀÖ¹ÓÉÓÚÓ²¼þÔ­Òòµ¼ÖÂLD3320Ð¾Æ¬¹¤×÷²»Õý³££¬ËùÒÔÒ»¹²³¢ÊÔ5´ÎÆô¶¯ASRÊ¶±ðÁ÷³Ì
+  for (size_t i = 0; i < 5; i++)  //	ï¿½ï¿½Ö¹ï¿½ï¿½ï¿½ï¿½Ó²ï¿½ï¿½Ô­ï¿½ï¿½ï¿½ï¿½LD3320Ð¾Æ¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½5ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ASRÊ¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
   {
     ld3320_init_asr();
     HAL_Delay(5);
     if (!ld3320_asr_add_fixed()) {
-      ld3320_reset();  //	LD3320Ð¾Æ¬ÄÚ²¿³öÏÖ²»Õý³££¬Á¢¼´ÖØÆôLD3320Ð¾Æ¬
-      HAL_Delay(5);    //	²¢´Ó³õÊ¼»¯¿ªÊ¼ÖØÐÂASRÊ¶±ðÁ÷³Ì
+      ld3320_reset();  //	LD3320Ð¾Æ¬ï¿½Ú²ï¿½ï¿½ï¿½ï¿½Ö²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½LD3320Ð¾Æ¬
+      HAL_Delay(5);    //	ï¿½ï¿½ï¿½Ó³ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ASRÊ¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
       continue;
     }
     HAL_Delay(5);
     if (!ld3320_asr_run()) {
-      ld3320_reset();  //	LD3320Ð¾Æ¬ÄÚ²¿³öÏÖ²»Õý³££¬Á¢¼´ÖØÆôLD3320Ð¾Æ¬
-      HAL_Delay(5);    //	²¢´Ó³õÊ¼»¯¿ªÊ¼ÖØÐÂASRÊ¶±ðÁ÷³Ì
+      ld3320_reset();  //	LD3320Ð¾Æ¬ï¿½Ú²ï¿½ï¿½ï¿½ï¿½Ö²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½LD3320Ð¾Æ¬
+      HAL_Delay(5);    //	ï¿½ï¿½ï¿½Ó³ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ASRÊ¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
       continue;
     }
-    return true;  //	ASRÁ÷³ÌÆô¶¯³É¹¦£¬ÍË³öµ±Ç°forÑ­»·¡£¿ªÊ¼µÈ´ýLD3320ËÍ³öµÄÖÐ¶ÏÐÅºÅ
+    return true;  //	ASRï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¹ï¿½ï¿½ï¿½ï¿½Ë³ï¿½ï¿½ï¿½Ç°forÑ­ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½È´ï¿½LD3320ï¿½Í³ï¿½ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½Åºï¿½
   }
   return false;
 }
@@ -259,7 +259,7 @@ void process_int(void) {
   reg_val = ld3320_read_reg(0x2b);
   ld3320_write_reg(0x29, 0);
   ld3320_write_reg(0x02, 0);
-  if ((reg_val & 0x10) && ld3320_read_reg(0xb2) == 0x21 && ld3320_read_reg(0xbf) == 0x35) /*Ê¶±ð³É¹¦*/
+  if ((reg_val & 0x10) && ld3320_read_reg(0xb2) == 0x21 && ld3320_read_reg(0xbf) == 0x35) /*Ê¶ï¿½ï¿½É¹ï¿½*/
   {
     asr_res_count = ld3320_read_reg(0xba);
 
@@ -267,41 +267,41 @@ void process_int(void) {
       asr_status = k_asr_foundok;
     } else {
       asr_status = k_asr_foundzero;
-      ZLOGI(TAG, "count = %d", asr_res_count);
-      ZLOGI(TAG, "asr res count error");
+      LOGI("count = %d", asr_res_count);
+      LOGI("asr res count error");
     }
-  } /*Ã»ÓÐÊ¶±ð½á¹û*/
+  } /*Ã»ï¿½ï¿½Ê¶ï¿½ï¿½ï¿½ï¿½*/
   else {
     asr_status = k_asr_foundzero;
-    ZLOGI(TAG, "empty");
+    LOGI("empty");
   }
 
   ld3320_write_reg(0x2b, 0);
-  ld3320_write_reg(0x1C, 0); /*Ð´0:ADC²»¿ÉÓÃ*/
+  ld3320_write_reg(0x1C, 0); /*Ð´0:ADCï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
   ld3320_write_reg(0x29, 0);
   ld3320_write_reg(0x02, 0);
   ld3320_write_reg(0x2B, 0);
   ld3320_write_reg(0xBA, 0);
   ld3320_write_reg(0xBC, 0);
-  ld3320_write_reg(0x08, 1); /*Çå³ýFIFO_DATA*/
-  ld3320_write_reg(0x08, 0); /*Çå³ýFIFO_DATAºó ÔÙ´ÎÐ´0*/
-  // ZLOGI(TAG, "process sucess");
+  ld3320_write_reg(0x08, 1); /*ï¿½ï¿½ï¿½FIFO_DATA*/
+  ld3320_write_reg(0x08, 0); /*ï¿½ï¿½ï¿½FIFO_DATAï¿½ï¿½ ï¿½Ù´ï¿½Ð´0*/
+  // LOGI( "process sucess");
 }
 
 void ld3320_test(void) {
   ld3320_reset();
-  ZLOGI(TAG, "%02x", ld3320_read_reg(0x06));
-  ZLOGI(TAG, "%02x", ld3320_read_reg(0x06));
-  ZLOGI(TAG, "%02x", ld3320_read_reg(0x35));
-  ZLOGI(TAG, "%02x", ld3320_read_reg(0xb3));
+  LOGI("%02x", ld3320_read_reg(0x06));
+  LOGI("%02x", ld3320_read_reg(0x06));
+  LOGI("%02x", ld3320_read_reg(0x35));
+  LOGI("%02x", ld3320_read_reg(0xb3));
 
   ld3320_read_reg(0x6);
   ld3320_write_reg(0x35, 0x33);
   ld3320_write_reg(0x1b, 0x55);
   ld3320_write_reg(0xb3, 0xaa);
-  ZLOGI(TAG, "%02x", ld3320_read_reg(0x35));
-  ZLOGI(TAG, "%02x", ld3320_read_reg(0x1b));
-  ZLOGI(TAG, "%02x", ld3320_read_reg(0xb3));
+  LOGI("%02x", ld3320_read_reg(0x35));
+  LOGI("%02x", ld3320_read_reg(0x1b));
+  LOGI("%02x", ld3320_read_reg(0xb3));
 }
 
 void ld3320_exit(void) { process_int(); }

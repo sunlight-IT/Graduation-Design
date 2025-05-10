@@ -50,6 +50,8 @@ typedef enum {
 } CmdParameBaudEnum;
 
 void     voice_compound_cmd(uint8_t* txt);
+void     voice_baud_cmd(void);
+void     voice_inquire_cmd(void);
 void     syn6288_inquiry(void);
 void     syn_handle_uart(UART_HandleTypeDef* h_uart);
 void     syn_recv(void);

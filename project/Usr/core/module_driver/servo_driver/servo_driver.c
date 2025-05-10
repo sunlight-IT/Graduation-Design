@@ -20,8 +20,8 @@ void servo_y_handle_reg(TIM_HandleTypeDef *h_tim) {
   HAL_TIM_PWM_Start(m_tim[1], TIM_CHANNEL_1);
 }
 
-void duty_output(uint32_t duty, int option) {
-  uint32_t duty_temp = duty;
+void duty_output(float duty, int option) {
+  float duty_temp = duty;
   if (duty_temp <= DUTY_MIN)
     duty_temp = DUTY_MIN;
   else if (duty_temp >= DUTY_MAX)
@@ -33,41 +33,56 @@ void duty_output(uint32_t duty, int option) {
 }
 
 void servo_angle_row(uint16_t angle, int option) {
-  float    angle_tmp = angle;
-  uint32_t duty      = 0;
-  if (angle_tmp >= ANGLE_MAX)
-    angle_tmp = ANGLE_MAX;
-  else if (angle_tmp <= ANGLE_MIN)
-    angle_tmp = ANGLE_MIN;
+  float angle_tmp = angle;
+  float duty      = 0;
 
-  duty = angle_tmp / ANGLE_MAX * (SERVO_DUTY_MAX - SERVO_DUTY_MIN) + SERVO_DUTY_MIN;
-  duty_output(duty, option);
+  switch (option) {
+    case k_servo_x:
+      if (angle_tmp >= ANGLE_X_MAX)
+        angle_tmp = ANGLE_X_MAX;
+      else if (angle_tmp <= ANGLE_X_MIN)
+        angle_tmp = ANGLE_X_MIN;
+
+      duty = angle_tmp / ANGLE_X_MAX * (SERVO_DUTY_MAX - SERVO_DUTY_MIN) + SERVO_DUTY_MIN;
+      duty_output(duty, option);
+      break;
+    case k_servo_y:
+      if (angle_tmp >= ANGLE_Y_MAX)
+        angle_tmp = ANGLE_Y_MAX;
+      else if (angle_tmp <= ANGLE_Y_MIN)
+        angle_tmp = ANGLE_Y_MIN;
+
+      duty = angle_tmp / ANGLE_Y_MAX * (SERVO_DUTY_MAX - SERVO_DUTY_MIN) + SERVO_DUTY_MIN;
+      duty_output(duty, option);
+      /* code */
+      break;
+  }
 }
 
 // block type
 void servo_test(void) {
-  // if (flages) {
-  //   for (int i = 10; i < 170; i++) {
-  //     servo_angle_row(i, 0);
-  //     servo_angle_row(i, 1);
-  //     HAL_Delay(1);
-  //   }
-  //   flages = 0;
-  // } else {
-  //   for (int i = 170; i > 10; i--) {
-  //     servo_angle_row(i, 0);
-  //     servo_angle_row(i, 1);
-  //     HAL_Delay(1);
-  //   }
-  //   flages = 1;
-  // }
+  if (flages) {
+    for (int i = 1000; i < 1600; i++) {
+      servo_angle_row(i, 0);
+      // servo_angle_row(i, 1);
+      HAL_Delay(1);
+    }
+    flages = 0;
+  } else {
+    for (int i = 1600; i > 1000; i--) {
+      servo_angle_row(i, 0);
+      // servo_angle_row(i, 1);
+      HAL_Delay(1);
+    }
+    flages = 1;
+  }
 
-  servo_angle_row(0, 0);
-  servo_angle_row(0, 1);
-  HAL_Delay(1000);
-  servo_angle_row(179, 0);
-  servo_angle_row(179, 1);
-  HAL_Delay(1000);
+  // servo_angle_row(1000, 0);
+  // servo_angle_row(1000, 1);
+  // HAL_Delay(2000);
+  // servo_angle_row(1600, 0);
+  // servo_angle_row(1350, 1);
+  // HAL_Delay(2000);
 }
 
 // unblock type

@@ -1,12 +1,13 @@
 #include "AL244B_fifo_driver.h"
 
+#include "Core/module_middle/image_display/middle_image.h"
 #include "component/component.h"
 #include "core/module_middle/middle_framework/middle_event_process.h"
 #define TAG "ALL2448_FIFO"
 
-static uint8_t  n_vsync;
-static uint16_t picture_data[CAMERA_WIDTH][CAMERA_HEIGHT];
-static bool     pic_state;
+static uint8_t n_vsync;
+// static uint16_t picture_data[CAMERA_WIDTH][CAMERA_HEIGHT];
+static bool pic_state;
 
 void ov7725_fifo_init(void) {
   FIFO_OE_L;
@@ -31,10 +32,8 @@ void pic_recv(void) {
       picture_data[i][j] = camera_dat;  // 行扫描存放
     }
   }
+  pic_state = false;
   clear_vsync();
-
-  pic_state = true;
-  // clear_vsync();
 }
 
 void vsync_exit(void) {
@@ -45,7 +44,8 @@ void vsync_exit(void) {
     FIFO_WRST_H;
   } else if (n_vsync == 1) {
     FIFO_WE_L;
-    n_vsync = 2;
-    pic_recv();
+    n_vsync   = 2;
+    pic_state = true;
+    // pic_recv();
   }
 }

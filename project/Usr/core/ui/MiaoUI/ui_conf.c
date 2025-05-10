@@ -33,8 +33,8 @@
 #include "widget/custom.h"
 
 /*******************MY_self********************/
-#include "Core/app/app_schedule.h"
 #include "Core/app/app_image_display.h"
+#include "Core/app/app_schedule.h"
 /***************************************/
 
 /* Page */
@@ -47,16 +47,15 @@ ui_item_t Contrast_Item;
 
 /*******************MY_self********************/
 
-
 typedef struct {
   const char *name;
-  uint32_t  color_id;
-}color_element_info_t;
+  uint32_t    color_id;
+} color_element_info_t;
 
 color_element_info_t color_element_info[3] = {
-  {"Red", COLOR_RED},
-  {"Yellow", COLOR_YELLOW},
-  {"Blue", COLOR_BLUE},
+    {"Red", COLOR_RED},
+    {"Yellow", COLOR_YELLOW},
+    {"Blue", COLOR_BLUE},
 };
 
 ui_item_t Color_Item[3];
@@ -85,7 +84,6 @@ void Create_Parameter(ui_t *ui) {
   Create_element(&Contrast_Item, &Contrast_element);
 
   /*******************MY_self********************/
- 
 
   static int       ColorRed = 0;
   static ui_data_t ColorRed_data;
@@ -93,6 +91,7 @@ void Create_Parameter(ui_t *ui) {
   ColorRed_data.ptr        = &ColorRed;
   ColorRed_data.dataType   = UI_DATA_SWITCH;
   ColorRed_data.actionType = UI_DATA_ACTION_RW;
+  ColorRed_data.function   = app_clore_choose;
   static ui_element_t Color_element;
   Color_element.data = &ColorRed_data;
   Create_element(&Color_Item[COLOR_RED], &Color_element);
@@ -104,6 +103,8 @@ void Create_Parameter(ui_t *ui) {
   ColorYellow_data.ptr        = &ColorYellow;
   ColorYellow_data.dataType   = UI_DATA_SWITCH;
   ColorYellow_data.actionType = UI_DATA_ACTION_RW;
+  ColorYellow_data.function   = app_clore_choose;
+  // ColorYellow_data.functionType = UI_DATA_FUNCTION_STEP_EXECUTE;
   static ui_element_t ColorYellow_element;
   ColorYellow_element.data = &ColorYellow_data;
   Create_element(&Color_Item[COLOR_YELLOW], &ColorYellow_element);
@@ -115,6 +116,7 @@ void Create_Parameter(ui_t *ui) {
   ColorBlue_data.ptr        = &ColorBlue;
   ColorBlue_data.dataType   = UI_DATA_SWITCH;
   ColorBlue_data.actionType = UI_DATA_ACTION_RW;
+  ColorBlue_data.function   = app_clore_choose;
   static ui_element_t ColorBlue_element;
   ColorBlue_element.data = &ColorBlue_data;
   Create_element(&Color_Item[COLOR_BLUE], &ColorBlue_element);

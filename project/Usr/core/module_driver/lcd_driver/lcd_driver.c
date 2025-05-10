@@ -41,7 +41,7 @@ void LCD_WR_CMD(uint8_t byte) {
   LCD_CS_DOWN;
   LCD_RS_DOWN;
   if (HAL_SPI_Transmit(m_spi, &data_8, 1, 10)) {
-    ErrorHanding(TAG, "HAL_SPI_Transmit error");
+    LOGE("HAL_SPI_Transmit error");
   }
   LCD_CS_UP;
 }
@@ -50,7 +50,7 @@ uint8_t LCD_RD_DATA(void) {
   uint8_t data = 0;
   LCD_CS_DOWN;
   if (HAL_SPI_Receive(m_spi, &data, 1, 10)) {
-    ErrorHanding(TAG, "HAL_SPI_Transmit error");
+    LOGE("HAL_SPI_Transmit error");
   }
   LCD_CS_UP;
   return data;
@@ -60,7 +60,7 @@ void LCD_WR_DATA(uint8_t byte) {
   LCD_CS_DOWN;
   LCD_RS_UP;
   if (HAL_SPI_Transmit(m_spi, &data_8, 1, 10)) {
-    ErrorHanding(TAG, "HAL_SPI_Transmit error");
+    LOGE("HAL_SPI_Transmit error");
   }
   LCD_CS_UP;
 }
@@ -70,7 +70,7 @@ void lcd_write_data_16(uint16_t word) {
   LCD_CS_DOWN;
   LCD_RS_UP;
   if (HAL_SPI_Transmit(m_spi, (uint8_t*)&data_16, 2, 10)) {
-    ErrorHanding(TAG, "HAL_SPI_Transmit error");
+    LOGE("HAL_SPI_Transmit error");
   }
   LCD_CS_UP;
 }
@@ -109,7 +109,7 @@ void test(void) {
   id = LCD_RD_DATA();
   id = LCD_RD_DATA() << 8;
   id |= LCD_RD_DATA();
-  ZLOGI(TAG, "id is : %04x", id);
+  LOGI("id is : %04x", id);
 }
 
 void lcd_write_reg(uint8_t reg_addr, uint16_t val) {

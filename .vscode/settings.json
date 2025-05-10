@@ -63,7 +63,9 @@
         "app_schedule.h": "c",
         "servo_apply.h": "c",
         "app_image_display.h": "c",
-        "middle_fsm.h": "c"
+        "middle_fsm.h": "c",
+        "stm32f103xe.h": "c",
+        "stdio.h": "c"
     },
     "C_Cpp.default.compilerPath": "",
     "files.encoding": "utf8"

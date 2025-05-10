@@ -47,3 +47,5 @@ void image_display_rgb(void);
 uint16_t get_picture_data(uint16_t x, uint16_t y);
 // uint16_t get_picture_data_bina(uint16_t x, uint16_t y);
 POSITION get_trace_pos(void);
+
+extern uint16_t picture_data[PIC_W][PIC_H];

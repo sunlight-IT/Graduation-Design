@@ -161,7 +161,7 @@ static void button_handler(struct Button* handle) {
  */
 int button_start(struct Button* handle) {
   struct Button* target = head_handle;
-  while (target) {
+  while (target != NULL) {
     if (target == handle) return -1;  // already exist.
     target = target->next;
   }

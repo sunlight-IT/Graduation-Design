@@ -12,18 +12,18 @@ void modification(void) {
   asr_resualt = get_asr_result();
   if ((asr_code_num)asr_resualt == k_code_cmd) {
     check_operate = true;
-    ZLOGI(TAG, "check_open sucess");
+    LOGI("check_open sucess");
   }
   if (check_operate) {
     switch (asr_resualt) {
       case k_code_dmcs:
-        ZLOGI(TAG, "%s", get_voice_cmd_data_chinese(k_code_dmcs));
+        LOGI("%s", get_voice_cmd_data_chinese(k_code_dmcs));
         break;
       case k_code_cswb:
-        ZLOGI(TAG, "%s", get_voice_cmd_data_chinese(k_code_cswb));
+        LOGI("%s", get_voice_cmd_data_chinese(k_code_cswb));
         break;
       case k_code_1:
-        ZLOGI(TAG, "%s", get_voice_cmd_data_chinese(k_code_1));
+        LOGI("%s", get_voice_cmd_data_chinese(k_code_1));
         break;
       case k_code_2:
         break;
@@ -33,24 +33,24 @@ void modification(void) {
         break;
     }
   } else {
-    ZLOGI(TAG, "ÊäÈëÒ»¼¶Ö¸Áî");
+    LOGI("ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ö¸ï¿½ï¿½");
   }
 }
 
 void voice_apply(void) {
   switch (get_asr_status()) {
     case k_asr_runing:
-      // ZLOGE(TAG, "RUNING_ASR");
+      // LOGE( "RUNING_ASR");
       break;
     case k_asr_error:
-      ZLOGE(TAG, "ERROR_ASR");
+      LOGE("ERROR_ASR");
       break;
     case k_asr_none:
       if (!asr_recognize()) {
         set_asr_status(k_asr_error);
-        ZLOGW(TAG, "asr_recognize error");
+        LOGW("asr_recognize error");
       }
-      ZLOGW(TAG, "asr_recognize ok");
+      LOGW("asr_recognize ok");
       set_asr_status(k_asr_runing);
       break;
     case k_asr_foundok:
@@ -58,7 +58,7 @@ void voice_apply(void) {
       set_asr_status(k_asr_none);
       break;
     case k_asr_foundzero:
-      ZLOGE(TAG, "ZERO_ASR");
+      LOGE("ZERO_ASR");
     default:
       set_asr_status(k_asr_none);
       break;

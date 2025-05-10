@@ -130,25 +130,25 @@ static uint8_t sccb_receive_byte(void) {
 
 bool sccb_write_byte(uint8_t write_addr, uint8_t byte) {
   if (!sccb_start()) {
-    ErrorHanding(TAG, "start error");
+    LOGE("start error");
     return false;
   }
   if (!sccb_send_byte(ADDR_OV7725)) {
-    ErrorHanding(TAG, "sccb_send_byte error1");
+    LOGE("sccb_send_byte error1");
     return false;
   }
   // if (!sccb_wait_ack()) {
   //   sccb_stop();
-  //   ErrorHanding(TAG, "sccb_wait_ack error");
+  //   LOGE( "sccb_wait_ack error");
   //   return false;
   // }
   if (!sccb_send_byte(write_addr & 0x00ff)) {
-    ErrorHanding(TAG, "sccb_send_byte error2");
+    LOGE("sccb_send_byte error2");
     return false;
   }
   // sccb_wait_ack();
   if (!sccb_send_byte(byte)) {
-    ErrorHanding(TAG, "sccb_send_byte error3");
+    LOGE("sccb_send_byte error3");
     return false;
   }
   // sccb_wait_ack();
@@ -159,21 +159,21 @@ bool sccb_write_byte(uint8_t write_addr, uint8_t byte) {
 bool sccb_read_byte(uint8_t read_addr, uint8_t *read_buf, uint16_t len) {
   // 2 step write
   if (!sccb_start()) {
-    ErrorHanding(TAG, "start error");
+    LOGE("start error");
     return false;
   }
   if (!sccb_send_byte(ADDR_OV7725)) {
-    ErrorHanding(TAG, "sccb_send_byte error1");
+    LOGE("sccb_send_byte error1");
 
     return false;
   }
   // if (!sccb_wait_ack()) {
   //   sccb_stop();
-  //   ErrorHanding(TAG, "sccb_wait_ack error");
+  //   LOGE( "sccb_wait_ack error");
   //   return false;
   // }
   if (!sccb_send_byte(read_addr)) {
-    ErrorHanding(TAG, "sccb_send_byte error2");
+    LOGE("sccb_send_byte error2");
 
     return false;
   }
@@ -185,18 +185,18 @@ bool sccb_read_byte(uint8_t read_addr, uint8_t *read_buf, uint16_t len) {
   // sccb_delay();
   // 2 step read;
   if (!sccb_start()) {
-    ErrorHanding(TAG, "start error");
+    LOGE("start error");
     return false;
   }
 
   if (!sccb_send_byte(ADDR_OV7725 | 0x01)) {
-    ErrorHanding(TAG, "sccb_send_byte error3");
+    LOGE("sccb_send_byte error3");
 
     return false;
   }
   // if (!sccb_wait_ack()) {
   //   sccb_stop();
-  //   ErrorHanding(TAG, "sccb_wait_ack error");
+  //   LOGE( "sccb_wait_ack error");
   //   return false;
   // }
   for (; len > 0; len--) {

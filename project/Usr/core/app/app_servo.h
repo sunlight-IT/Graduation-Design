@@ -6,7 +6,7 @@
 #define TFT_AND_ACTUAL_RATE   (ACTUAL_IMAGE_LEN / (float)(120 - 1))          // TFT两像素和实际图像大小的比例
 #define CAL_PARAMER           (TFT_AND_ACTUAL_RATE / CAMERA_IMAGE_DISTANCE)  // 计算实际tan的参数
 
-#define MID_ANGLR 900
+#define MID_ANGLR 1350  // 90度中间位置
 
 void rate_translate_angle(void);
 void servo_pid_calculate(void);

@@ -57,14 +57,14 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define SDIO_C_Pin GPIO_PIN_4
+#define SDIO_C_Pin GPIO_PIN_2
 #define SDIO_C_GPIO_Port GPIOE
-#define SDIO_D_Pin GPIO_PIN_5
+#define SDIO_D_Pin GPIO_PIN_3
 #define SDIO_D_GPIO_Port GPIOE
-#define OV7725_RCLK_Pin GPIO_PIN_6
+#define OV7725_RCLK_Pin GPIO_PIN_4
 #define OV7725_RCLK_GPIO_Port GPIOE
-#define OV7725_WEN_Pin GPIO_PIN_13
-#define OV7725_WEN_GPIO_Port GPIOC
+#define OV7725_WEN_Pin GPIO_PIN_5
+#define OV7725_WEN_GPIO_Port GPIOE
 #define OV7725_DATA0_Pin GPIO_PIN_0
 #define OV7725_DATA0_GPIO_Port GPIOF
 #define OV7725_DATA1_Pin GPIO_PIN_1

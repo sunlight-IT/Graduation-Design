@@ -3,7 +3,7 @@
 
 #include "stm32f1xx_hal.h"
 
-#define FSMC_LCD 1  // 1:浣跨�?FSMC鎺ュ彛锛�?0:浣跨�?SPI鎺ュ�?
+#define FSMC_LCD 1  // 1:娴ｈ法鏁?FSMC閹恒儱褰涢敍锟?0:娴ｈ法鏁?SPI閹恒儱褰?
 
 #define BUF_SIZE 256
 
@@ -11,13 +11,13 @@
 #define CONNECT(a, b)   __CONNECT(a, b)
 
 #if FSMC_LCD
-#define FSMC_BANK1_BASE               ((uint32_t)0x60000000)
-#define FSMC_BANK1_NORSRAM_OFFSET_NE1 ((uint32_t)0x00 << 24)
+#define FSMC_BANK1_BASE               ((uint32_t)0x60000000)  // FSMC基地址
+#define FSMC_BANK1_NORSRAM_OFFSET_NE1 ((uint32_t)0x00 << 24)  // 不同片选控制地址
 #define FSMC_BANK1_NORSRAM_OFFSET_NE2 ((uint32_t)0x04 << 24)
 #define FSMC_BANK1_NORSRAM_OFFSET_NE3 ((uint32_t)0x08 << 24)
 #define FSMC_BANK1_NORSRAM_OFFSET_NE4 ((uint32_t)0x0C << 24)
 
-#define FSMC_BANK_NORSRAM4 ((FSMC_BANK1_BASE) | FSMC_BANK1_NORSRAM_OFFSET_NE4)
+#define FSMC_BANK_NORSRAM4 ((FSMC_BANK1_BASE) | FSMC_BANK1_NORSRAM_OFFSET_NE4)  // 选择NE4片选控制
 // FSMC_Bank1_NORSRAM
 #define FSMC_Addr_LCD_CMD (FSMC_BANK_NORSRAM4 | (((uint32_t)0x00) << 11))
 
@@ -25,19 +25,19 @@
 #define FSMC_Addr_LCD_DATA (FSMC_BANK_NORSRAM4 | (((uint32_t)0x01) << 11))
 #endif
 
-// 瀹氫箟LCD鐨勫昂锟�??
+// 鐎规矮绠烲CD閻ㄥ嫬鏄傞敓锟??
 #define LCD_W 240
 #define LCD_H 320
 
-// LCD閲嶏�??锟藉�?鏁伴�?
+// LCD闁插稄鎷??閿熻棄寮?閺佷即娉?
 typedef struct {
-  uint16_t width;    // LCD 瀹藉�?
-  uint16_t height;   // LCD 楂樺�?
+  uint16_t width;    // LCD 鐎硅棄瀹?
+  uint16_t height;   // LCD 妤傛ê瀹?
   uint16_t id;       // LCD ID
-  uint8_t  dir;      // 锟�?灞忚繕锟�??绔栧睆鎺у埗锟�??0锛岀�?灞忥�?1锛屾í灞忥�??
-  uint16_t wramcmd;  // �?�?�?�?啓gram鎸囦�?
-  uint16_t setxcmd;  // 璁剧疆x鍧愭爣鎸囦护
-  uint16_t setycmd;  // 璁剧疆y鍧愭爣鎸囦护
+  uint8_t  dir;      // 閿燂拷?鐏炲繗绻曢敓锟??缁旀牕鐫嗛幒褍鍩楅敓锟??0閿涘瞼鐝?鐏炲骏绱?1閿涘本铆鐏炲骏鎷??
+  uint16_t wramcmd;  // 瀵?鈧?婵?瀣?鍟揼ram閹稿洣鎶?
+  uint16_t setxcmd;  // 鐠佸墽鐤唜閸ф劖鐖ｉ幐鍥︽姢
+  uint16_t setycmd;  // 鐠佸墽鐤唝閸ф劖鐖ｉ幐鍥︽姢
 } _lcd_dev;
 
 typedef enum {
@@ -47,7 +47,7 @@ typedef enum {
   k_two_hundred_seventy  // 270
 } lcd_direct_degress_t;
 
-// 鐢荤�?棰滆�?
+// 閻㈣崵鐟?妫版粏澹?
 #define WHITE   0xFFFF
 #define BLACK   0x0000
 #define BLUE    0x001F
@@ -59,22 +59,22 @@ typedef enum {
 #define GREEN   0x07E0
 #define CYAN    0x7FFF
 #define YELLOW  0xFFE0
-#define BROWN   0XBC40  // �?曡�??
-#define BRRED   0XFC07  // �?曠�?�锟�??
-#define GRAY    0X8430  // 鐏拌�?
-// GUI棰滆�?
+#define BROWN   0XBC40  // 濡?鏇″??
+#define BRRED   0XFC07  // 濡?鏇犲?╅敓锟??
+#define GRAY    0X8430  // 閻忔媽澹?
+// GUI妫版粏澹?
 
-#define DARKBLUE  0X01CF  // 娣辫摑锟�??
-#define LIGHTBLUE 0X7D7C  // 娴呰摑锟�??
-#define GRAYBLUE  0X5458  // 鐏拌摑锟�??
-// 浠ヤ笂涓夎�?�涓篜ANEL鐨勶�??锟借�??
+#define DARKBLUE  0X01CF  // 濞ｈ精鎽戦敓锟??
+#define LIGHTBLUE 0X7D7C  // 濞村懓鎽戦敓锟??
+#define GRAYBLUE  0X5458  // 閻忔媽鎽戦敓锟??
+// 娴犮儰绗傛稉澶庡?婃稉绡淎NEL閻ㄥ嫸鎷??閿熷€熷??
 
-#define LIGHTGREEN 0X841F  // 娴呯豢锟�??
-#define LIGHTGRAY  0XEF5B  // 娴呯伆锟�??(PANNEL)
-#define LGRAY      0XC618  // 娴呯伆锟�??(PANNEL),绐椾綋鑳屾櫙锟�?
+#define LIGHTGREEN 0X841F  // 濞村懐璞㈤敓锟??
+#define LIGHTGRAY  0XEF5B  // 濞村懐浼嗛敓锟??(PANNEL)
+#define LGRAY      0XC618  // 濞村懐浼嗛敓锟??(PANNEL),缁愭ぞ缍嬮懗灞炬珯閿燂拷?
 
-#define LGRAYBLUE 0XA651  // 娴呯伆钃濊�??(锟�?闂村眰棰滆�??)
-#define LBBLUE    0X2B12  // 娴咃�??锟借摑锟�?(�?夋�?�鏉＄洰鐨勫弽锟�??)
+#define LGRAYBLUE 0XA651  // 濞村懐浼嗛拑婵婂??(閿燂拷?闂傛潙鐪版０婊嗗??)
+#define LBBLUE    0X2B12  // 濞村拑鎷??閿熷€熸憫閿燂拷?(闁?澶嬪?ㄩ弶锛勬窗閻ㄥ嫬寮介敓锟??)
 
 void lcd_init(void);
 void lcd_handle_reg(SPI_HandleTypeDef* hspi);

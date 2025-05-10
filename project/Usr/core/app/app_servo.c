@@ -1,5 +1,6 @@
 #include "app_servo.h"
 
+#include "Core/module_driver/servo_driver/servo_driver.h"
 #include "Core/module_middle/image_display/middle_image.h"
 #include "component/algorithm/pid/pid.h"
 #define PI 3.1415926
@@ -29,14 +30,14 @@ void servo_pid_calculate(void) {
   out_y          = pid_increment(error_coord.y, k_pid_servo_y);
   servo_angle_row(MID_ANGLR + out_x, 0);
   servo_angle_row(MID_ANGLR + out_y, 1);
-  // lcd_show_string(0, 210, 12, "error is: ", 0);
-  // lcd_show_string(0, 225, 12, "(          )", 0);
-  // lcd_show_num(12, 225, error_coord.x, 2, 12);
-  // lcd_show_num(35, 225, error_coord.y, 2, 12);
+  lcd_show_string(100, 210, 12, "error is: ", 0);
+  lcd_show_string(100, 225, 12, "(          )", 0);
+  lcd_show_num(112, 225, error_coord.x, 2, 12);
+  lcd_show_num(135, 225, error_coord.y, 2, 12);
 
-  // lcd_show_string(200, 200, 12, "out is ", 0);
-  // lcd_show_num(200, 215, out_x, 2, 12);
-  // lcd_show_num(200, 225, out_y, 2, 12);
+  lcd_show_string(200, 200, 12, "out is ", 0);
+  lcd_show_num(200, 215, MID_ANGLR + out_x, 4, 12);
+  lcd_show_num(200, 225, MID_ANGLR + out_y, 4, 12);
 }
 
 POSITION* get_error_coord(void) { return &error_coord; }

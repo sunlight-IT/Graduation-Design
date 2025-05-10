@@ -131,30 +131,30 @@ bool Ov7725_init(void) {
   ov7725_fifo_init();
 
   if (0 == sccb_write_byte(0x12, 0x80)) {
-    ErrorHanding(TAG, "sccb_write_byte error");
+    LOGE("sccb_write_byte error");
 
     return false;
   }
   if (0 == sccb_read_byte(0x0b, &ID, 1)) {
-    ErrorHanding(TAG, "sccb_read_byte error");
+    LOGE("sccb_read_byte error");
 
     return false;
   }
 
   if (ID != OV7725_ID) {
-    ErrorHanding(TAG, "ID error");
+    LOGE("ID error");
 
     return false;
   }
-  ZLOGI(TAG, "%02x", ID);
+  LOGI("%02x", ID);
 
   for (int i = 0; i < reg_num; i++) {
     if (0 == sccb_write_byte(reg_config[i].address, reg_config[i].value)) {
-      ZLOGE(TAG, "sccb_write_byte %02x error", reg_config[i].address);
+      LOGE("sccb_write_byte %02x error", reg_config[i].address);
       return false;
     }
   }
-  ZLOGI(TAG, "ov7725 Rgeister Config Sucess");
+  LOGI("ov7725 Rgeister Config Sucess");
   return true;
 }
 
@@ -206,7 +206,7 @@ void ov7725_light_mode(light_mode mode) {
       break;
 
     default:
-      ZLOGE(TAG, "Light Mode parameter error! : %d", mode);
+      LOGE("Light Mode parameter error! : %d", mode);
 
       break;
   }
@@ -218,7 +218,7 @@ void ov7725_color_saturation(int8_t sat) {
     sccb_write_byte(k_REG_USAT, (sat + 4) << 4);
     sccb_write_byte(k_REG_VSAT, (sat + 4) << 4);
   } else {
-    ZLOGE(TAG, "Color Saturation parameter error! :%d", sat);
+    LOGE("Color Saturation parameter error! :%d", sat);
   }
 }
 
@@ -273,7 +273,7 @@ void ov7725_brightness(int8_t brightness) {
       break;
 
     default:
-      ZLOGE(TAG, "Brightness parameter error! : %d", brightness);
+      LOGE("Brightness parameter error! : %d", brightness);
       break;
   }
 
@@ -286,7 +286,7 @@ void ov7725_constrast(int8_t cnst) {
   if (cnst >= -4 && cnst <= 4) {
     sccb_write_byte(k_REG_CNST, (0x30 - (4 - cnst) * 4));
   } else {
-    ZLOGE(TAG, "Contrast parameter error! : %d", cnst);
+    LOGE("Contrast parameter error! : %d", cnst);
   }
 }
 
@@ -335,7 +335,7 @@ void ov7725_special_effect(special_effects eff) {
       break;
 
     default:
-      ZLOGE(TAG, "Special Effect error! : %d", eff);
+      LOGE("Special Effect error! : %d", eff);
       break;
   }
 }

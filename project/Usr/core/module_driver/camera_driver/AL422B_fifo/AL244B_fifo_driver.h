@@ -21,14 +21,13 @@
   do {                                               \
     RGB565 = 0;                                      \
     FIFO_RCLK_L;                                     \
-    RGB565 = (OV7725_DATA_GPIO_Port->IDR & 0x00ff);  \
+    RGB565 = (OV7725_DATA_GPIO_Port->IDR) & 0x00ff;  \
     RGB565 <<= 8;                                    \
     FIFO_RCLK_H;                                     \
     FIFO_RCLK_L;                                     \
     RGB565 |= (OV7725_DATA_GPIO_Port->IDR) & 0x00ff; \
     FIFO_RCLK_H;                                     \
   } while (0)
-
 typedef uint8_t (*pic_data)[CAMERA_HEIGHT];
 
 void ov7725_fifo_init(void);
@@ -43,3 +42,5 @@ void     pic_recv(void);
 uint8_t  get_vsync(void);
 bool     get_pic_state(void);
 void     clear_pic_state(void);
+
+void pic_recv(void);

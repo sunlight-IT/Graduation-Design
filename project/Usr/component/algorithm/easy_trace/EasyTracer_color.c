@@ -128,7 +128,7 @@ static void RGBtoHSL(const COLOR_RGB *Rgb, COLOR_HSL *Hsl) {
  *返回参数：成功返回1，失败返回0
  ****************************************************************************/
 static int ColorMatch(const COLOR_HSL *Hsl, const TARGET_CONDI *Condition) {
-  if (((Hsl->hue > Condition->H_MIN1 && Hsl->hue < Condition->H_MAX1) || (Hsl->hue > Condition->H_MIN2 && Hsl->hue < Condition->H_MAX2)) && Hsl->hue < Condition->H_MAX1 && Hsl->saturation > Condition->S_MIN && Hsl->saturation < Condition->S_MAX && Hsl->luminance > Condition->L_MIN &&
+  if (((Hsl->hue > Condition->H_MIN1 && Hsl->hue < Condition->H_MAX1) || (Hsl->hue > Condition->H_MIN2 && Hsl->hue < Condition->H_MAX2)) && Hsl->saturation > Condition->S_MIN && Hsl->saturation < Condition->S_MAX && Hsl->luminance > Condition->L_MIN &&
       Hsl->luminance < Condition->L_MAX)  // hue为色调，saturation为饱和度 ，luminance为亮度
     return 1;
   else

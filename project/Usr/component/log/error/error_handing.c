@@ -3,9 +3,9 @@
 #include "component/component.h"
 #include "stm32f1xx_hal.h"
 
-void ErrorHanding(char* local, char* info) {
-  // while (1) {
-  ZLOGE(local, "%s", info);
-  // HAL_Delay(1000);
-  //}
-}
+// void ErrorHanding(char* local, char* info) {
+//   // while (1) {
+//   LOGE(local, "%s", info);
+//   // HAL_Delay(1000);
+//   //}
+// }

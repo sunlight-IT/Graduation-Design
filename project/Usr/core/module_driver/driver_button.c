@@ -2,13 +2,11 @@
 
 #include "gpio.h"
 
-#define BUTTON_PORT GPIOE
-// #define BUTTON_MID_PORT  GPIOE
-// #define BUTTON_DOWN_PORT GPIOE
+#define BUTTON_PORT GPIOG
 
-#define BUTTON_TOP_PIN  GPIO_PIN_10
-#define BUTTON_MID_PIN  GPIO_PIN_11
-#define BUTTON_DOWN_PIN GPIO_PIN_12
+#define BUTTON_TOP_PIN  KEY0_Pin
+#define BUTTON_MID_PIN  KEY1_Pin
+#define BUTTON_DOWN_PIN KEY2_Pin
 
 uint8_t read_button(button_id id) {
   switch (id) {

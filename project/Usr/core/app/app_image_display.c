@@ -29,23 +29,26 @@ void now_target_set(uint32_t color_type) {
   }
 }
 bool app_trace_picture(void) {
-  // ZLOGE(TAG, "trace ");
+  // LOGE( "trace ");
   if (!Trace(now_target, &result)) {
+    result_pos.x = 0;
+    result_pos.y = 0;
     return false;
   }
 
   result_pos.x = result.x;
   result_pos.y = result.y;
+  lcd_draw_cross(result.x, result.y, 3);
+  lcd_draw_rectangle(result.x, result.y, result.w, result.h);
   return true;
 }
+POSITION get_trace_pos() { return result_pos; }
 
 void app_image_display(void) {
   // image_display_rgb();
-  // lcd_draw_cross(result.x, result.y, 3);
-  // lcd_draw_rectangle(result.x, result.y, result.w, result.h);
 
-  image_display_rgb();
-  // image_display_bin();
+  // image_display_rgb();
+  image_display_bin();
 
   lcd_show_string(0, 150, 12, "trace center is ", 0);
   lcd_show_string(0, 165, 12, "(  ,  )", 0);
